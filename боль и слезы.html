@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ТехноМир — г. Воронеж</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080810;--surf:#111120;--card:#17172a;--card2:#1e1e36;
+  --acc:#00e5ff;--acc2:#ff5e3a;--acc3:#a259f7;--acc4:#22c55e;
+  --text:#eff0f8;--muted:#8890b4;--border:rgba(255,255,255,.07);
+  --glow:rgba(0,229,255,.13);--radius:18px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit}
+
+/* навигация */
+nav{
+  position:sticky;top:0;z-index:90;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 36px;height:66px;
+  background:rgba(8,8,16,.88);backdrop-filter:blur(22px);
+  border-bottom:1px solid var(--border);
+}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;letter-spacing:-.03em;
+  background:linear-gradient(135deg,var(--acc),var(--acc3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-right{display:flex;gap:12px;align-items:center}
+.btn-phone{display:flex;align-items:center;gap:7px;padding:9px 18px;border-radius:50px;
+  background:linear-gradient(135deg,var(--acc2),#c0392b);
+  border:none;color:#fff;font-size:.82rem;font-weight:600;
+  transition:transform .18s,box-shadow .18s}
+.btn-phone:hover{transform:scale(1.05);box-shadow:0 0 22px rgba(255,94,58,.4)}
+.btn-compare-nav{display:flex;align-items:center;gap:6px;padding:9px 18px;border-radius:50px;
+  border:1px solid var(--border);background:var(--surf);color:var(--muted);
+  font-size:.82rem;font-weight:600;transition:all .18s}
+.btn-compare-nav:hover{border-color:var(--acc3);color:var(--acc3)}
+.btn-compare-nav .cmp-badge{background:var(--acc3);color:#fff;
+  width:18px;height:18px;border-radius:50%;font-size:.6rem;font-weight:800;
+  display:grid;place-items:center;margin-left:2px}
+.btn-cart{position:relative;width:42px;height:42px;border-radius:50%;
+  border:1px solid var(--border);background:var(--surf);
+  display:grid;place-items:center;font-size:1.1rem;
+  transition:border-color .2s,background .2s}
+.btn-cart:hover{border-color:var(--acc);background:var(--card)}
+.cart-badge{position:absolute;top:-4px;right:-4px;
+  background:var(--acc);color:var(--bg);width:18px;height:18px;
+  border-radius:50%;font-size:.62rem;font-weight:800;
+  display:grid;place-items:center;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.cart-badge.pop{transform:scale(1.5)}
+
+/* переключение видов */
+.view{display:none}
+.view.active{display:block}
+
+/* главный баннер */
+.hero{padding:60px 36px 44px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 65% 55% at 65% 40%,rgba(0,229,255,.055),transparent),
+    radial-gradient(ellipse 50% 70% at 5% 90%,rgba(162,89,247,.045),transparent)}
+.hero h1{font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(2rem,4.5vw,3.4rem);line-height:1.1;letter-spacing:-.03em;
+  max-width:600px;position:relative}
+.hero h1 em{font-style:normal;color:var(--acc)}
+.hero p{margin-top:14px;color:var(--muted);font-size:.95rem;line-height:1.65;
+  max-width:460px;position:relative}
+
+/* вкладки категорий */
+.cat-tabs{padding:0 36px 16px;display:flex;gap:10px;flex-wrap:wrap}
+.cat-tab{padding:10px 22px;border-radius:50px;border:1px solid var(--border);
+  background:var(--surf);color:var(--muted);font-size:.88rem;font-weight:500;
+  transition:all .2s}
+.cat-tab:hover{border-color:var(--acc);color:var(--acc)}
+.cat-tab.active{background:var(--acc);border-color:var(--acc);color:var(--bg);font-weight:700}
+
+/* фильтр по бренду */
+.brand-filter{padding:0 36px 10px;display:flex;gap:8px;flex-wrap:wrap}
+.brand-btn{padding:7px 16px;border-radius:50px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);font-size:.8rem;
+  transition:all .18s}
+.brand-btn:hover{border-color:rgba(255,255,255,.2);color:var(--text)}
+.brand-btn.active{border-color:var(--acc3);color:var(--acc3);background:rgba(162,89,247,.1)}
+
+/* фильтр по году */
+.year-filter{padding:0 36px 20px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.year-label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-right:4px}
+.year-btn{padding:5px 14px;border-radius:50px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);font-size:.78rem;
+  transition:all .18s}
+.year-btn:hover{border-color:rgba(255,255,255,.2);color:var(--text)}
+.year-btn.active{border-color:var(--acc4);color:var(--acc4);background:rgba(34,197,94,.1)}
+
+/* сетка товаров */
+.grid{padding:0 36px 120px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+
+/* карточка товара */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;display:flex;flex-direction:column;
+  transition:transform .32s cubic-bezier(.22,1,.36,1),box-shadow .32s ease,border-color .32s ease}
+.card:hover{transform:translateY(-7px) scale(1.008);
+  box-shadow:0 22px 55px rgba(0,0,0,.5),0 0 0 1px rgba(0,229,255,.16),0 0 36px var(--glow);
+  border-color:rgba(0,229,255,.22)}
+
+/* изображение в карточке */
+.card-img{height:240px;background:var(--surf);position:relative;
+  display:flex;align-items:center;justify-content:center;overflow:hidden}
+.card-img img{width:100%;height:100%;object-fit:contain;padding:12px;
+  transition:transform .45s cubic-bezier(.22,1,.36,1),filter .3s;
+  filter:brightness(.92)}
+.card:hover .card-img img{transform:scale(1.06);filter:brightness(1)}
+.card-img .overlay{position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 50%,rgba(8,8,16,.7));
+  pointer-events:none}
+.card-img-placeholder{position:absolute;font-size:5rem;opacity:.12;pointer-events:none}
+.brand-badge{position:absolute;top:12px;left:12px;
+  padding:4px 10px;border-radius:50px;font-size:.68rem;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase}
+.year-badge{position:absolute;top:12px;right:12px;
+  padding:4px 10px;border-radius:50px;font-size:.65rem;font-weight:700;
+  background:rgba(0,229,255,.12);color:var(--acc);border:1px solid rgba(0,229,255,.2)}
+.badge-apple{background:rgba(255,255,255,.12);color:#fff}
+.badge-samsung{background:rgba(0,229,255,.15);color:#00e5ff}
+.badge-xiaomi{background:rgba(255,94,58,.15);color:#ff5e3a}
+.badge-laptops{background:rgba(34,197,94,.15);color:#22c55e}
+.badge-audio{background:rgba(162,89,247,.15);color:#a259f7}
+
+/* тело карточки */
+.card-body{padding:16px 18px 18px;display:flex;flex-direction:column;flex:1}
+.card-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;line-height:1.25;margin-bottom:4px}
+.card-desc{font-size:.77rem;color:var(--muted);line-height:1.55;margin-bottom:12px;flex:1}
+
+/* выбор цвета */
+.color-picker-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.color-label{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.color-dots{display:flex;gap:5px;flex-wrap:wrap}
+.color-dot{width:18px;height:18px;border-radius:50%;border:2px solid transparent;
+  cursor:pointer;transition:all .16s;flex-shrink:0;position:relative}
+.color-dot:hover{transform:scale(1.15);border-color:rgba(255,255,255,.5)}
+.color-dot.sel{border-color:var(--acc);transform:scale(1.18);
+  box-shadow:0 0 0 2px rgba(0,229,255,.35)}
+.color-name-tip{font-size:.7rem;color:var(--acc);margin-left:4px}
+
+/* выбор объёма памяти */
+.storage-label{font-size:.72rem;color:var(--muted);margin-bottom:7px;text-transform:uppercase;letter-spacing:.05em}
+.storage-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.chip{padding:5px 12px;border-radius:50px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);font-size:.76rem;
+  transition:all .16s}
+.chip:hover{border-color:rgba(255,255,255,.2);color:var(--text)}
+.chip.sel{border-color:var(--acc);color:var(--acc);background:rgba(0,229,255,.1)}
+
+/* цена со скидкой */
+.price-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:12px;gap:8px}
+.price-block{display:flex;flex-direction:column;gap:2px}
+.price-old{font-size:.82rem;color:var(--muted);text-decoration:line-through;line-height:1}
+.price-new{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;
+  color:var(--acc);letter-spacing:-.03em;line-height:1}
+.discount-tag{display:inline-block;background:rgba(255,94,58,.15);color:var(--acc2);
+  border:1px solid rgba(255,94,58,.25);border-radius:6px;
+  font-size:.68rem;font-weight:700;padding:2px 7px;margin-left:6px;vertical-align:middle}
+.rating{font-size:.78rem;color:#fbbf24;flex-shrink:0}
+
+/* кнопки действий на карточке */
+.card-actions{display:grid;grid-template-columns:1fr 1fr 44px;gap:6px}
+.btn-buy,.btn-more,.btn-cmp{padding:10px 0;border-radius:10px;font-size:.8rem;font-weight:600;border:none;
+  transition:all .18s}
+.btn-buy{background:var(--acc);color:var(--bg)}
+.btn-buy:hover{background:#00cce0;transform:scale(1.03)}
+.btn-more{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.btn-more:hover{border-color:var(--acc3);color:var(--acc3)}
+.btn-cmp{background:transparent;border:1px solid var(--border);color:var(--muted);font-size:1rem}
+.btn-cmp:hover{border-color:var(--acc3);color:var(--acc3)}
+.btn-cmp.active{background:rgba(162,89,247,.15);border-color:var(--acc3);color:var(--acc3)}
+
+/* страница товара */
+#view-product{position:fixed;inset:0;z-index:80;background:var(--bg);overflow-y:auto;display:none}
+#view-product.active{display:block;animation:slideIn .35s cubic-bezier(.22,1,.36,1)}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+.detail-back{display:flex;align-items:center;gap:8px;padding:20px 36px;
+  font-size:.88rem;color:var(--muted);border:none;background:none;
+  transition:color .18s;cursor:pointer}
+.detail-back:hover{color:var(--acc)}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:0 36px 60px;max-width:1100px;margin:0 auto}
+@media(max-width:720px){.detail-grid{grid-template-columns:1fr}}
+.detail-img{border-radius:var(--radius);overflow:hidden;background:var(--surf);
+  height:420px;display:flex;align-items:center;justify-content:center;position:relative}
+.detail-img img{width:100%;height:100%;object-fit:contain;padding:20px;transition:opacity .3s}
+.detail-color-picker{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.detail-color-dot{width:26px;height:26px;border-radius:50%;border:3px solid transparent;
+  cursor:pointer;transition:all .18s}
+.detail-color-dot:hover{transform:scale(1.12);border-color:rgba(255,255,255,.4)}
+.detail-color-dot.sel{border-color:var(--acc);box-shadow:0 0 0 3px rgba(0,229,255,.3)}
+.detail-info{display:flex;flex-direction:column;gap:14px}
+.detail-brand{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.detail-name{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;line-height:1.15;letter-spacing:-.03em}
+.detail-short{font-size:.92rem;color:var(--muted);line-height:1.65}
+.specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.spec-item{background:var(--surf);border-radius:10px;padding:10px 14px}
+.spec-key{font-size:.7rem;color:var(--muted);margin-bottom:2px}
+.spec-val{font-size:.85rem;font-weight:500}
+.detail-storage-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.detail-chips{display:flex;flex-wrap:wrap;gap:8px}
+.detail-price-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.detail-price-block{display:flex;flex-direction:column;gap:3px}
+.detail-price-old{font-size:1rem;color:var(--muted);text-decoration:line-through}
+.detail-price{font-family:'Syne',sans-serif;font-weight:800;font-size:2.2rem;color:var(--acc);letter-spacing:-.04em}
+.detail-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-detail-buy{flex:1.5;padding:14px 24px;border-radius:12px;
+  background:var(--acc);border:none;color:var(--bg);font-weight:700;font-size:.95rem;
+  transition:all .18s}
+.btn-detail-buy:hover{background:#00cce0;transform:scale(1.02)}
+.btn-detail-call{flex:1;padding:14px 24px;border-radius:12px;
+  background:linear-gradient(135deg,var(--acc2),#c0392b);
+  border:none;color:#fff;font-weight:600;font-size:.9rem;transition:all .18s}
+.btn-detail-call:hover{transform:scale(1.02);box-shadow:0 0 20px rgba(255,94,58,.35)}
+.btn-detail-cmp{flex:0.7;padding:14px;border-radius:12px;
+  border:1px solid var(--border);background:transparent;color:var(--muted);
+  font-size:.85rem;font-weight:600;transition:all .18s}
+.btn-detail-cmp:hover{border-color:var(--acc3);color:var(--acc3)}
+.btn-detail-cmp.active{background:rgba(162,89,247,.15);border-color:var(--acc3);color:var(--acc3)}
+
+/* корзина */
+#view-cart{padding:36px}
+.cart-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.cart-header-row h2{font-family:'Syne',sans-serif;font-weight:800;font-size:1.6rem}
+.cart-controls{display:flex;gap:10px;flex-wrap:wrap}
+.btn-select-all,.btn-del-sel,.btn-back-catalog{padding:9px 18px;border-radius:50px;font-size:.82rem;font-weight:600;border:none;transition:all .18s}
+.btn-select-all{background:var(--surf);color:var(--muted);border:1px solid var(--border)}
+.btn-select-all:hover{border-color:var(--acc);color:var(--acc)}
+.btn-del-sel{background:rgba(255,94,58,.12);color:var(--acc2);border:1px solid rgba(255,94,58,.2)}
+.btn-del-sel:hover{background:rgba(255,94,58,.2)}
+.btn-back-catalog{background:var(--surf);color:var(--muted);border:1px solid var(--border)}
+.btn-back-catalog:hover{border-color:var(--acc3);color:var(--acc3)}
+.cart-list{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.cart-empty-msg{text-align:center;padding:80px 0;color:var(--muted);font-size:1rem}
+.cart-item{display:flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:14px 18px;transition:border-color .18s}
+.cart-item.selected{border-color:rgba(0,229,255,.35);background:rgba(0,229,255,.03)}
+.cart-cb{width:18px;height:18px;accent-color:var(--acc);cursor:pointer;flex-shrink:0}
+.cart-item-img{width:72px;height:72px;border-radius:10px;overflow:hidden;background:var(--surf);flex-shrink:0}
+.cart-item-img img{width:100%;height:100%;object-fit:contain;padding:4px}
+.cart-item-info{flex:1}
+.cart-item-name{font-weight:600;font-size:.9rem;margin-bottom:3px}
+.cart-item-sub{font-size:.78rem;color:var(--muted)}
+.cart-item-price{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--acc);white-space:nowrap}
+.cart-qty{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.qty-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);
+  background:var(--surf);color:var(--text);font-size:1rem;display:grid;place-items:center;transition:all .16s}
+.qty-btn:hover{border-color:var(--acc);color:var(--acc)}
+.qty-num{font-weight:700;font-size:.9rem;min-width:20px;text-align:center}
+.cart-item-del{width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,94,58,.2);
+  background:rgba(255,94,58,.08);color:var(--acc2);font-size:1rem;display:grid;place-items:center;
+  transition:all .16s;flex-shrink:0}
+.cart-item-del:hover{background:rgba(255,94,58,.2)}
+.cart-summary{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;max-width:420px;margin-left:auto}
+.summary-row{display:flex;justify-content:space-between;margin-bottom:10px;font-size:.9rem;color:var(--muted)}
+.summary-total{display:flex;justify-content:space-between;font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;
+  margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.summary-total span:last-child{color:var(--acc)}
+.btn-checkout{width:100%;margin-top:16px;padding:14px;border-radius:12px;
+  background:linear-gradient(135deg,var(--acc),var(--acc3));border:none;color:var(--bg);
+  font-weight:800;font-size:1rem;font-family:'Syne',sans-serif;transition:opacity .18s,transform .18s}
+.btn-checkout:hover{opacity:.9;transform:scale(1.02)}
+
+/* панель сравнения снизу */
+.compare-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:85;
+  background:rgba(17,17,32,.96);backdrop-filter:blur(20px);
+  border-top:1px solid rgba(162,89,247,.3);
+  padding:14px 36px;
+  display:flex;align-items:center;gap:16px;
+  transform:translateY(100%);transition:transform .35s cubic-bezier(.22,1,.36,1);
+}
+.compare-bar.open{transform:translateY(0)}
+.cmp-bar-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;white-space:nowrap;color:var(--acc3)}
+.cmp-bar-items{display:flex;gap:10px;flex:1;flex-wrap:wrap}
+.cmp-bar-item{display:flex;align-items:center;gap:8px;background:var(--card2);
+  border:1px solid rgba(162,89,247,.2);border-radius:10px;padding:6px 10px;position:relative}
+.cmp-bar-item-name{font-size:.78rem;font-weight:500;max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmp-bar-item-del{width:18px;height:18px;border-radius:50%;border:none;
+  background:rgba(255,94,58,.2);color:var(--acc2);font-size:.7rem;
+  display:grid;place-items:center;cursor:pointer;flex-shrink:0}
+.cmp-bar-item-del:hover{background:rgba(255,94,58,.4)}
+.cmp-bar-slot{width:140px;height:36px;border:1px dashed rgba(255,255,255,.12);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;color:var(--muted)}
+.btn-do-compare{padding:10px 24px;border-radius:50px;
+  background:linear-gradient(135deg,var(--acc3),var(--acc));
+  border:none;color:#fff;font-weight:700;font-size:.85rem;
+  transition:all .18s;white-space:nowrap}
+.btn-do-compare:hover{transform:scale(1.04);box-shadow:0 0 20px rgba(162,89,247,.4)}
+.btn-cmp-clear{padding:8px 16px;border-radius:50px;border:1px solid rgba(255,255,255,.1);
+  background:transparent;color:var(--muted);font-size:.78rem;transition:all .18s}
+.btn-cmp-clear:hover{border-color:var(--acc2);color:var(--acc2)}
+
+/* страница сравнения */
+#view-compare{padding:36px;min-height:100vh}
+.compare-header{display:flex;align-items:center;gap:16px;margin-bottom:32px;flex-wrap:wrap}
+.compare-header h2{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem}
+.compare-header p{color:var(--muted);font-size:.88rem}
+.btn-back-cmp{padding:9px 18px;border-radius:50px;border:1px solid var(--border);
+  background:var(--surf);color:var(--muted);font-size:.82rem;font-weight:600;transition:all .18s}
+.btn-back-cmp:hover{border-color:var(--acc);color:var(--acc)}
+
+.compare-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.compare-table{border-collapse:separate;border-spacing:0;width:100%;min-width:500px}
+.compare-table th{background:var(--card2);padding:16px 18px;text-align:center;
+  border-bottom:2px solid var(--border);position:sticky;top:0;z-index:5}
+.compare-table td{padding:12px 18px;border-bottom:1px solid var(--border);
+  vertical-align:middle;font-size:.88rem}
+.cmp-col-header{display:flex;flex-direction:column;align-items:center;gap:10px;min-width:200px}
+.cmp-product-img{width:80px;height:80px;object-fit:contain;border-radius:10px;background:var(--surf);padding:4px}
+.cmp-product-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;text-align:center;line-height:1.3}
+.cmp-product-brand{font-size:.72rem;color:var(--muted)}
+.cmp-product-price{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--acc)}
+.btn-cmp-remove{padding:5px 12px;border-radius:50px;border:1px solid rgba(255,94,58,.25);
+  background:transparent;color:var(--acc2);font-size:.72rem;cursor:pointer;transition:all .16s}
+.btn-cmp-remove:hover{background:rgba(255,94,58,.15)}
+.cmp-spec-label{color:var(--muted);font-size:.8rem;font-weight:500;background:var(--surf)}
+.cmp-row-even td{background:rgba(255,255,255,.015)}
+.cmp-highlight{color:var(--acc4);font-weight:600}
+.cmp-buy-cell{text-align:center}
+.btn-cmp-buy{padding:9px 18px;border-radius:10px;background:var(--acc);border:none;
+  color:var(--bg);font-size:.8rem;font-weight:700;transition:all .18s}
+.btn-cmp-buy:hover{background:#00cce0;transform:scale(1.03)}
+.compare-empty{text-align:center;padding:80px;color:var(--muted)}
+
+/* моделька с номером телефона */
+.modal-bg{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.72);
+  backdrop-filter:blur(12px);display:grid;place-items:center;
+  opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-bg.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--card2);border:1px solid rgba(255,255,255,.09);border-radius:24px;
+  padding:36px;width:min(420px,92vw);
+  transform:scale(.9) translateY(20px);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.modal-bg.open .modal-box{transform:scale(1) translateY(0)}
+.modal-box h3{font-family:'Syne',sans-serif;font-weight:800;font-size:1.35rem;margin-bottom:8px}
+.modal-box p{color:var(--muted);font-size:.88rem;line-height:1.6;margin-bottom:20px}
+.modal-phone{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--acc);margin-bottom:24px}
+.modal-actions{display:flex;gap:10px}
+.btn-modal-close,.btn-modal-call{flex:1;padding:12px;border-radius:12px;font-size:.88rem;font-weight:600;border:none;transition:all .18s}
+.btn-modal-close{background:var(--surf);color:var(--muted)}
+.btn-modal-close:hover{color:var(--text)}
+.btn-modal-call{background:linear-gradient(135deg,var(--acc2),#c0392b);color:#fff}
+.btn-modal-call:hover{transform:scale(1.03);box-shadow:0 0 20px rgba(255,94,58,.35)}
+
+/* тост-уведомление */
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--card2);border:1px solid rgba(0,229,255,.3);
+  padding:11px 22px;border-radius:50px;font-size:.84rem;z-index:150;white-space:nowrap;
+  transition:transform .38s cubic-bezier(.34,1.56,.64,1)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ниж шапка */
+footer{border-top:1px solid var(--border);padding:28px 36px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.f-logo{font-family:'Syne',sans-serif;font-weight:800;
+  background:linear-gradient(135deg,var(--acc),var(--acc3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;opacity:.7}
+.f-text{font-size:.78rem;color:var(--muted);line-height:1.6}
+.f-author{font-size:.78rem;color:var(--muted);text-align:right}
+</style>
+</head>
+<body>
+
+<!-- навигация -->
+<nav>
+  <div class="logo">ТехноМир</div>
+  <div class="nav-right">
+    <button class="btn-compare-nav" id="navCmpBtn" onclick="openCompare()" style="display:none">
+      ⚖️ Сравнить<span class="cmp-badge" id="navCmpBadge">0</span>
+    </button>
+    <button class="btn-phone" onclick="openCallModal()">📞 +7 (980) 542-29-59</button>
+    <button class="btn-cart" onclick="goCart()">
+      🛒<span class="cart-badge" id="cartBadge">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- каталог -->
+<div id="view-catalog" class="view active">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <h1>Лучшая техника —<br><em>по честным ценам</em></h1>
+    <p>Смартфоны, ноутбуки и наушники — линейки 2023–2025 годов</p>
+  </section>
+
+  <div class="cat-tabs">
+    <button class="cat-tab active" data-cat="phones" onclick="setCategory('phones',this)">📱 Телефоны</button>
+    <button class="cat-tab" data-cat="laptops" onclick="setCategory('laptops',this)">💻 Ноутбуки</button>
+    <button class="cat-tab" data-cat="audio" onclick="setCategory('audio',this)">🎧 Наушники</button>
+  </div>
+
+  <div class="brand-filter" id="brandFilter"></div>
+  <div class="year-filter" id="yearFilter">
+    <span class="year-label">Год:</span>
+  </div>
+
+  <div class="grid" id="productsGrid"></div>
+</div>
+
+<!-- страница товара -->
+<div id="view-product" class="view">
+  <button class="detail-back" onclick="goCatalog()">← Назад в каталог</button>
+  <div class="detail-grid">
+    <div class="detail-img">
+      <img id="detailImg" src="" alt="" onerror="fallbackImg(this, this.dataset.raw||this.src)">
+      <span id="detailImgPlaceholder" style="position:absolute;font-size:6rem;opacity:.1"></span>
+    </div>
+    <div class="detail-info" id="detailInfo"></div>
+  </div>
+</div>
+
+<!-- корзина -->
+<div id="view-cart" class="view">
+  <div class="cart-header-row">
+    <h2>🛒 Корзина</h2>
+    <div class="cart-controls">
+      <button class="btn-back-catalog" onclick="goCatalog()">← Продолжить покупки</button>
+      <button class="btn-select-all" onclick="toggleSelectAll()">Выбрать все</button>
+      <button class="btn-del-sel" onclick="deleteSelected()">🗑 Удалить выбранные</button>
+    </div>
+  </div>
+  <div class="cart-list" id="cartList"></div>
+  <div id="cartSummary"></div>
+</div>
+
+<!-- сравнение -->
+<div id="view-compare" class="view">
+  <div class="compare-header">
+    <button class="btn-back-cmp" onclick="goCatalog()">← Назад</button>
+    <div>
+      <h2>⚖️ Сравнение товаров</h2>
+      <p>До 4 устройств одновременно</p>
+    </div>
+  </div>
+  <div id="compareContent"></div>
+</div>
+
+<!-- панель сравнения -->
+<div class="compare-bar" id="compareBar">
+  <div class="cmp-bar-title">⚖️ Сравнение</div>
+  <div class="cmp-bar-items" id="cmpBarItems"></div>
+  <button class="btn-do-compare" onclick="openCompare()">Сравнить →</button>
+  <button class="btn-cmp-clear" onclick="clearCompare()">Очистить</button>
+</div>
+
+<!-- модклька звонка -->
+<div class="modal-bg" id="callModal" onclick="closeCallModal(event)">
+  <div class="modal-box">
+    <h3>Узнать точную цену</h3>
+    <p id="modalText">Позвоните нам — специалист проконсультирует по наличию, характеристикам и условиям доставки.</p>
+    <div class="modal-phone">📞 +7 (980) 542-29-59</div>
+    <div class="modal-actions">
+      <button class="btn-modal-close" onclick="document.getElementById('callModal').classList.remove('open')">Закрыть</button>
+      <a href="tel:+79805422959" style="flex:1">
+        <button class="btn-modal-call" style="width:100%">Позвонить</button>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- тост -->
+<div class="toast" id="toast"></div>
+
+<!-- подвал -->
+<footer>
+  <div class="f-logo">ТехноМир</div>
+  <div class="f-text">
+    г. Воронеж, ул. Университетская, 1а<br>
+    +7 (980) 542-29-59 · Пн–Вс 9:00–21:00<br>
+    <span style="color:rgba(136,144,180,.5);font-size:.7rem">Цены по данным: mvideo.ru · ситилинк.рф</span>
+  </div>
+  <div class="f-author">Разработчик:<br><strong style="color:var(--text)">Липатов Евгений Сергеевич</strong></div>
+</footer>
+
+<script>
+// товары
+const PRODUCTS = [
+
+  // apple 2025
+  {
+    id:'ap17pm', cat:'phones', brand:'Apple', year:2025,
+    name:'Apple iPhone 17 Pro Max',
+    shortDesc:'A19 Pro · 6.9" OLED 120 Гц · 18 Мп фронт · Titanium',
+    rating:'★★★★★ 4.9',
+    colors:[
+      {name:'Black Titanium',  hex:'#2C2C2C', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-pro-finish-select-202509-6-9inch-blacktitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Desert Titanium', hex:'#C9AB7D', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-pro-finish-select-202509-6-9inch-deserttitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Natural Titanium',hex:'#D4C5AD', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-pro-finish-select-202509-6-9inch-naturaltitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'White Titanium',  hex:'#F0EDE8', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-pro-finish-select-202509-6-9inch-whitetitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+    ],
+    specs:[
+      ['Процессор','A19 Pro (3 нм)'],['Дисплей','6.9" OLED 120 Гц, 3000 нит'],
+      ['Камера','48 Мп + 12 Мп + 12 Мп'],['Фронт','18 Мп, 4K'],
+      ['Аккумулятор','4685 мАч'],['ОС','iOS 26'],['Защита','IP68'],['5G','Да'],
+    ],
+    fullDesc:'Флагман Apple 2025 года. Чип A19 Pro, камера 48 Мп с 5× оптическим зумом, видео 4K ProRes 120 к/с. Apple Intelligence — функции ИИ встроены в систему.',
+    storage:[
+      {label:'256 ГБ', price:143990, oldPrice:159990},
+      {label:'512 ГБ', price:165990},
+      {label:'1 ТБ',   price:187490},
+    ]
+  },
+  {
+    id:'ap17p', cat:'phones', brand:'Apple', year:2025,
+    name:'Apple iPhone 17 Pro',
+    shortDesc:'A19 Pro · 6.3" OLED 120 Гц · Titanium · 4K ProRes',
+    rating:'★★★★★ 4.8',
+    colors:[
+      {name:'Black Titanium',  hex:'#2C2C2C', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-pro-finish-select-202509-6-3inch-blacktitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Desert Titanium', hex:'#C9AB7D', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-pro-finish-select-202509-6-3inch-deserttitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Natural Titanium',hex:'#D4C5AD', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-pro-finish-select-202509-6-3inch-naturaltitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'White Titanium',  hex:'#F0EDE8', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-pro-finish-select-202509-6-3inch-whitetitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+    ],
+    specs:[
+      ['Процессор','A19 Pro (3 нм)'],['Дисплей','6.3" OLED 120 Гц'],
+      ['Камера','48 Мп + 12 Мп + 12 Мп'],['Фронт','18 Мп'],
+      ['Аккумулятор','3900 мАч'],['ОС','iOS 26'],['Защита','IP68'],['5G','Да'],
+    ],
+    fullDesc:'Компактный флагман Apple 2025. Те же возможности Pro Max в более удобном размере. 4K ProRes, кнопка Action, iOS 19 с Apple Intelligence.',
+    storage:[
+      {label:'256 ГБ', price:120990},
+      {label:'512 ГБ', price:140990},
+      {label:'1 ТБ',   price:160990},
+    ]
+  },
+  {
+    id:'ap17air', cat:'phones', brand:'Apple', year:2025,
+    name:'Apple iPhone 17 Air',
+    shortDesc:'A19 · 6.7" · Тончайший корпус 5.5 мм · 48 Мп',
+    rating:'★★★★☆ 4.7',
+    colors:[
+      {name:'Sky Blue',  hex:'#5BA3C9', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-finish-select-202509-6-7inch-skyblue?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Black',     hex:'#1A1A1A', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-finish-select-202509-6-7inch-black?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'White',     hex:'#F5F5ED', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-finish-select-202509-6-7inch-white?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Blush Pink',hex:'#DDAAA8', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-finish-select-202509-6-7inch-blushpink?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+    ],
+    specs:[
+      ['Процессор','A19 (3 нм)'],['Дисплей','6.7" OLED 120 Гц'],
+      ['Корпус','Алюминий, 5.5 мм — тончайший iPhone'],['Камера','48 Мп'],
+      ['Аккумулятор','3400 мАч'],['ОС','iOS 26'],['Защита','IP68'],['5G','Да'],
+    ],
+    fullDesc:'Самый тонкий iPhone в истории — всего 5.5 мм. Большой дисплей 6.7", чип A19, камера 48 Мп. Для тех, кто ценит лёгкость и стиль.',
+    storage:[
+      {label:'256 ГБ', price:99990, oldPrice:114990},
+      {label:'512 ГБ', price:129990},
+    ]
+  },
+  {
+    id:'ap17', cat:'phones', brand:'Apple', year:2025,
+    name:'Apple iPhone 17',
+    shortDesc:'A19 · 6.1" OLED · 48 Мп · Алюминиевый корпус',
+    rating:'★★★★☆ 4.6',
+    colors:[
+      {name:'Black',       hex:'#1A1A1A', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-finish-select-202509-6-1inch-black?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'White',       hex:'#F5F5ED', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-finish-select-202509-6-1inch-white?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Sky Blue',    hex:'#5BA3C9', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-finish-select-202509-6-1inch-skyblue?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Blush Pink',  hex:'#DDAAA8', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-finish-select-202509-6-1inch-blushpink?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+    ],
+    specs:[
+      ['Процессор','A19 (3 нм)'],['Дисплей','6.1" OLED 60 Гц'],
+      ['Камера','48 Мп + 12 Мп'],['Фронт','12 Мп'],
+      ['Аккумулятор','3500 мАч'],['ОС','iOS 26'],['Защита','IP68'],['5G','Да'],
+    ],
+    fullDesc:'Базовая модель 2025 с чипом A19 и 48 Мп камерой. Качество фото — уровень прошлогодних Pro. Несколько ярких цветовых вариантов.',
+    storage:[
+      {label:'128 ГБ', price:79990},
+      {label:'256 ГБ', price:89990, oldPrice:99990},
+      {label:'512 ГБ', price:109990},
+    ]
+  },
+
+  // apple 2024
+  {
+    id:'ap16pm', cat:'phones', brand:'Apple', year:2024,
+    name:'Apple iPhone 16 Pro Max',
+    shortDesc:'A18 Pro · 6.9" OLED 120 Гц · ProRes · Camera Control',
+    rating:'★★★★★ 4.9',
+    colors:[
+      {name:'Black Titanium',  hex:'#2C2C2C', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-blacktitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Desert Titanium', hex:'#C9AB7D', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-deserttitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Natural Titanium',hex:'#D4C5AD', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-naturaltitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'White Titanium',  hex:'#F0EDE8', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-whitetitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+    ],
+    specs:[
+      ['Процессор','A18 Pro (3 нм)'],['Дисплей','6.9" Super Retina XDR 120 Гц'],
+      ['Камера','48+48+12 Мп, Camera Control'],['Фронт','12 Мп TrueDepth'],
+      ['Аккумулятор','4685 мАч'],['ОС','iOS 18'],['Защита','IP68'],['5G','Да'],
+    ],
+    fullDesc:'iPhone 16 Pro Max — флагман 2024 с кнопкой Camera Control. Самый большой дисплей в линейке Pro, тройная камера с ультра-широкоугольным 48 Мп объективом.',
+    storage:[
+      {label:'256 ГБ', price:129990, oldPrice:149990},
+      {label:'512 ГБ', price:149990, oldPrice:169990},
+      {label:'1 ТБ',   price:169990},
+    ]
+  },
+  {
+    id:'ap16p', cat:'phones', brand:'Apple', year:2024,
+    name:'Apple iPhone 16 Pro',
+    shortDesc:'A18 Pro · 6.3" OLED 120 Гц · Camera Control',
+    rating:'★★★★★ 4.8',
+    colors:[
+      {name:'Black Titanium',  hex:'#2C2C2C', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-3inch-blacktitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Desert Titanium', hex:'#C9AB7D', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-3inch-deserttitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Natural Titanium',hex:'#D4C5AD', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-3inch-naturaltitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'White Titanium',  hex:'#F0EDE8', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-3inch-whitetitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+    ],
+    specs:[
+      ['Процессор','A18 Pro (3 нм)'],['Дисплей','6.3" Super Retina XDR 120 Гц'],
+      ['Камера','48+48+12 Мп'],['Фронт','12 Мп'],
+      ['Аккумулятор','3582 мАч'],['ОС','iOS 18'],['Защита','IP68'],['5G','Да'],
+    ],
+    fullDesc:'Компактный Pro 2024 с теми же возможностями, что и Pro Max. Camera Control — физическая кнопка для управления камерой. Titanium корпус.',
+    storage:[
+      {label:'128 ГБ', price:109990, oldPrice:124990},
+      {label:'256 ГБ', price:124990, oldPrice:139990},
+      {label:'512 ГБ', price:144990},
+      {label:'1 ТБ',   price:164990},
+    ]
+  },
+  {
+    id:'ap16', cat:'phones', brand:'Apple', year:2024,
+    name:'Apple iPhone 16',
+    shortDesc:'A18 · 6.1" OLED · 48 Мп · Action + Camera Control',
+    rating:'★★★★☆ 4.6',
+    colors:[
+      {name:'Black',       hex:'#1A1A1A', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-black?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Pink',        hex:'#F4C2C2', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-pink?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Teal',        hex:'#3E8A8A', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-teal?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Ultramarine', hex:'#3D5A99', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-ultramarine?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'White',       hex:'#F5F5ED', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-white?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+    ],
+    specs:[
+      ['Процессор','A18 (3 нм)'],['Дисплей','6.1" OLED 60 Гц'],
+      ['Камера','48 + 12 Мп'],['Фронт','12 Мп'],
+      ['Аккумулятор','3561 мАч'],['ОС','iOS 18'],['Защита','IP68'],['5G','Да'],
+    ],
+    fullDesc:'iPhone 16 с двумя новыми кнопками: Action Button и Camera Control. Чип A18 — первый в линейке без Pro, поддерживающий Apple Intelligence.',
+    storage:[
+      {label:'128 ГБ', price:69990, oldPrice:79990},
+      {label:'256 ГБ', price:84990, oldPrice:94990},
+      {label:'512 ГБ', price:109990},
+    ]
+  },
+
+  // apple 2023
+  {
+    id:'ap15pm', cat:'phones', brand:'Apple', year:2023,
+    name:'Apple iPhone 15 Pro Max',
+    shortDesc:'A17 Pro · 6.7" · Titanium · 5× оптический зум',
+    rating:'★★★★★ 4.8',
+    colors:[
+      {name:'Black Titanium',  hex:'#2C2C2C', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-blacktitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'White Titanium',  hex:'#F0EDE8', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-whitetitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Natural Titanium',hex:'#D4C5AD', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-naturaltitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Blue Titanium',   hex:'#5A7FA0', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-bluetitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+    ],
+    specs:[
+      ['Процессор','A17 Pro (3 нм)'],['Дисплей','6.7" Super Retina XDR 120 Гц'],
+      ['Камера','48 Мп + 12 Мп + 12 Мп, 5× зум'],['Фронт','12 Мп'],
+      ['Аккумулятор','4422 мАч'],['ОС','iOS 17 (до iOS 26)'],['Защита','IP68'],['5G','Да'],
+    ],
+    fullDesc:'Первый iPhone с Titanium корпусом и 5× оптическим зумом. Чип A17 Pro — первый 3-нм чип в смартфоне. Action Button — настраиваемая физическая кнопка.',
+    storage:[
+      {label:'256 ГБ', price:89990, oldPrice:129990},
+      {label:'512 ГБ', price:109990, oldPrice:149990},
+      {label:'1 ТБ',   price:129990},
+    ]
+  },
+  {
+    id:'ap15p', cat:'phones', brand:'Apple', year:2023,
+    name:'Apple iPhone 15 Pro',
+    shortDesc:'A17 Pro · 6.1" · Titanium · Action Button',
+    rating:'★★★★☆ 4.7',
+    colors:[
+      {name:'Black Titanium',  hex:'#2C2C2C', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-blacktitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'White Titanium',  hex:'#F0EDE8', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-whitetitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Natural Titanium',hex:'#D4C5AD', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-naturaltitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+      {name:'Blue Titanium',   hex:'#5A7FA0', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-bluetitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80'},
+    ],
+    specs:[
+      ['Процессор','A17 Pro (3 нм)'],['Дисплей','6.1" Super Retina XDR 120 Гц'],
+      ['Камера','48 Мп + 12 Мп + 12 Мп'],['Фронт','12 Мп'],
+      ['Аккумулятор','3274 мАч'],['ОС','iOS 17 (до iOS 19)'],['Защита','IP68'],['5G','Да'],
+    ],
+    fullDesc:'Компактный Pro 2023 с чипом A17 Pro и Titanium корпусом. USB-C с поддержкой USB 3 для быстрой передачи данных. ProRes видео 4K 60 к/с.',
+    storage:[
+      {label:'128 ГБ', price:74990, oldPrice:109990},
+      {label:'256 ГБ', price:84990, oldPrice:124990},
+      {label:'512 ГБ', price:104990},
+      {label:'1 ТБ',   price:124990},
+    ]
+  },
+
+  // samsung 2025
+  {
+    id:'ss25u', cat:'phones', brand:'Samsung', year:2025,
+    name:'Samsung Galaxy S25 Ultra',
+    shortDesc:'Snapdragon 8 Elite · 6.9" AMOLED · 200 Мп · S Pen',
+    rating:'★★★★★ 4.9',
+    colors:[
+      {name:'Titanium Black',  hex:'#1A1A1A', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/2501/gallery/uk-galaxy-s25-ultra-s928-sm-s928bzkgeub-542544765?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Titanium Silver', hex:'#B8B8C0', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/2501/gallery/uk-galaxy-s25-ultra-s928-sm-s928bzageub-542544765?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Titanium Blue',   hex:'#4A6080', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/2501/gallery/uk-galaxy-s25-ultra-s928-sm-s928bzbgeub-542544765?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Titanium Gray',   hex:'#5A5A5A', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/2501/gallery/uk-galaxy-s25-ultra-s928-sm-s928bzdgeub-542544765?wid=650&hei=519&fmt=png-alpha&trim=true'},
+    ],
+    specs:[
+      ['Процессор','Snapdragon 8 Elite'],['Дисплей','6.9" Dynamic AMOLED 2X 120 Гц'],
+      ['Камера','200 + 50 + 50 + 10 Мп'],['S Pen','Встроен'],
+      ['Аккумулятор','5000 мАч'],['ОС','Android 15, One UI 7'],['Защита','IP68'],['ОЗУ','12 ГБ'],
+    ],
+    fullDesc:'Флагман Samsung 2025. 200 Мп камера, зум 100×, встроенный S Pen. Galaxy AI: интеллектуальное редактирование фото, Circle to Search, переводчик в реальном времени.',
+    storage:[
+      {label:'256 ГБ', price:88222, oldPrice:99990},
+      {label:'512 ГБ', price:109338},
+      {label:'1 ТБ',   price:124308},
+    ]
+  },
+  {
+    id:'ss25p', cat:'phones', brand:'Samsung', year:2025,
+    name:'Samsung Galaxy S25+',
+    shortDesc:'Snapdragon 8 Elite · 6.7" · 50 Мп · 4600 мАч',
+    rating:'★★★★☆ 4.7',
+    colors:[
+      {name:'Icy Blue',      hex:'#B3D4E5', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/2501/gallery/uk-galaxy-s25-s931-sm-s931blbeub-542547040?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Mint',          hex:'#A8CABA', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/2501/gallery/uk-galaxy-s25-s931-sm-s931bageub-542547040?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Navy',          hex:'#1A2A3A', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/2501/gallery/uk-galaxy-s25-s931-sm-s931bzkgeub-542547040?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Silver Shadow', hex:'#C0C0C8', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/2501/gallery/uk-galaxy-s25-s931-sm-s931bzageub-542547040?wid=650&hei=519&fmt=png-alpha&trim=true'},
+    ],
+    specs:[
+      ['Процессор','Snapdragon 8 Elite'],['Дисплей','6.7" Dynamic AMOLED 120 Гц'],
+      ['Камера','50 + 12 + 10 Мп'],['Фронт','12 Мп'],
+      ['Аккумулятор','4600 мАч'],['ОС','Android 15'],['Защита','IP68'],['ОЗУ','12 ГБ'],
+    ],
+    fullDesc:'Galaxy S25+ с большим экраном и ёмким аккумулятором. Тот же Snapdragon 8 Elite, поддержка Galaxy AI. Беспроводная зарядка 45 Вт.',
+    storage:[
+      {label:'256 ГБ', price:79990, oldPrice:89990},
+      {label:'512 ГБ', price:94990},
+    ]
+  },
+  {
+    id:'ss25', cat:'phones', brand:'Samsung', year:2025,
+    name:'Samsung Galaxy S25',
+    shortDesc:'Snapdragon 8 Elite · 6.2" · 50 Мп · Compact',
+    rating:'★★★★☆ 4.6',
+    colors:[
+      {name:'Icy Blue',      hex:'#B3D4E5', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/2501/gallery/uk-galaxy-s25-s931-sm-s931blbeub-542547040?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Mint',          hex:'#A8CABA', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/2501/gallery/uk-galaxy-s25-s931-sm-s931bageub-542547040?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Navy',          hex:'#1A2A3A', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/2501/gallery/uk-galaxy-s25-s931-sm-s931bzkgeub-542547040?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Silver Shadow', hex:'#C0C0C8', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/2501/gallery/uk-galaxy-s25-s931-sm-s931bzageub-542547040?wid=650&hei=519&fmt=png-alpha&trim=true'},
+    ],
+    specs:[
+      ['Процессор','Snapdragon 8 Elite'],['Дисплей','6.2" Dynamic AMOLED 120 Гц'],
+      ['Камера','50 + 12 + 10 Мп'],['Фронт','12 Мп'],
+      ['Аккумулятор','4000 мАч'],['ОС','Android 15'],['Защита','IP68'],['ОЗУ','12 ГБ'],
+    ],
+    fullDesc:'Компактный флагман Samsung 2025. Snapdragon 8 Elite, тройная камера 50 Мп, Galaxy AI — отличный выбор по соотношению цена/качество.',
+    storage:[
+      {label:'128 ГБ', price:64990, oldPrice:74990},
+      {label:'256 ГБ', price:74990},
+      {label:'512 ГБ', price:89990},
+    ]
+  },
+
+  // samsung 2024
+  {
+    id:'ss24u', cat:'phones', brand:'Samsung', year:2024,
+    name:'Samsung Galaxy S24 Ultra',
+    shortDesc:'Snapdragon 8 Gen 3 · 6.8" · 200 Мп · S Pen · Galaxy AI',
+    rating:'★★★★★ 4.8',
+    colors:[
+      {name:'Titanium Black',   hex:'#1A1A1A', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-s928bzkgeub-362031994?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Titanium Orange',  hex:'#C07040', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-s928bzogeub-362031994?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Titanium Gray',    hex:'#5A5A5A', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-s928bzdgeub-362031994?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Titanium Violet',  hex:'#7A5A8A', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-s928bzveub-362031994?wid=650&hei=519&fmt=png-alpha&trim=true'},
+    ],
+    specs:[
+      ['Процессор','Snapdragon 8 Gen 3'],['Дисплей','6.8" Dynamic AMOLED 120 Гц'],
+      ['Камера','200 + 50 + 50 + 10 Мп'],['S Pen','Встроен'],
+      ['Аккумулятор','5000 мАч'],['ОС','Android 14, One UI 6.1'],['Защита','IP68'],['ОЗУ','12 ГБ'],
+    ],
+    fullDesc:'Первый Galaxy S Ultra с корпусом из титана. Первое поколение Galaxy AI — ИИ-функции для фото, перевода и заметок. Камера 200 Мп с 5× оптическим зумом.',
+    storage:[
+      {label:'256 ГБ', price:74990, oldPrice:99990},
+      {label:'512 ГБ', price:89990, oldPrice:114990},
+      {label:'1 ТБ',   price:104990},
+    ]
+  },
+  {
+    id:'ss24', cat:'phones', brand:'Samsung', year:2024,
+    name:'Samsung Galaxy S24',
+    shortDesc:'Exynos 2400 · 6.2" · 50 Мп · Galaxy AI',
+    rating:'★★★★☆ 4.5',
+    colors:[
+      {name:'Onyx Black', hex:'#1A1A1A', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-s921bzkgeub-346805494?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Marble Gray',hex:'#909090', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-s921bzdgeub-346805494?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Cobalt Violet',hex:'#5A3A7A',img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-s921bzveub-346805494?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Amber Yellow',hex:'#D4A020', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-s921byegeub-346805494?wid=650&hei=519&fmt=png-alpha&trim=true'},
+    ],
+    specs:[
+      ['Процессор','Exynos 2400'],['Дисплей','6.2" Dynamic AMOLED 120 Гц'],
+      ['Камера','50 + 12 + 10 Мп'],['Фронт','12 Мп'],
+      ['Аккумулятор','4000 мАч'],['ОС','Android 14'],['Защита','IP68'],['ОЗУ','8 ГБ'],
+    ],
+    fullDesc:'Galaxy S24 с ИИ-функциями Galaxy AI. Яркий дисплей, быстрая зарядка 25 Вт. Обновление до Android 16 включено.',
+    storage:[
+      {label:'128 ГБ', price:49990, oldPrice:64990},
+      {label:'256 ГБ', price:59990, oldPrice:74990},
+    ]
+  },
+
+  // samsung 2023
+  {
+    id:'ss23u', cat:'phones', brand:'Samsung', year:2023,
+    name:'Samsung Galaxy S23 Ultra',
+    shortDesc:'Snapdragon 8 Gen 2 · 6.8" · 200 Мп · S Pen',
+    rating:'★★★★☆ 4.7',
+    colors:[
+      {name:'Phantom Black',hex:'#1A1A1A', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-s918bzkgeub-346805?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Cream',        hex:'#F5E6C8', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-s918bzegeub-346805?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Green',        hex:'#2A5A2A', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-s918bzggeub-346805?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Lavender',     hex:'#C8A8D8', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-s918bzvgeub-346805?wid=650&hei=519&fmt=png-alpha&trim=true'},
+    ],
+    specs:[
+      ['Процессор','Snapdragon 8 Gen 2'],['Дисплей','6.8" Dynamic AMOLED 120 Гц'],
+      ['Камера','200 + 10 + 10 + 12 Мп'],['S Pen','Встроен'],
+      ['Аккумулятор','5000 мАч'],['ОС','Android 13 (до 16)'],['Защита','IP68'],['ОЗУ','12 ГБ'],
+    ],
+    fullDesc:'Galaxy S23 Ultra — первый Samsung со 200 Мп камерой. Встроенный S Pen, 10× оптический зум. Отличный вариант по сниженной цене.',
+    storage:[
+      {label:'256 ГБ', price:59990, oldPrice:89990},
+      {label:'512 ГБ', price:74990, oldPrice:109990},
+    ]
+  },
+
+  // xiaomi 2025
+  {
+    id:'xi15u', cat:'phones', brand:'Xiaomi', year:2025,
+    name:'Xiaomi 15 Ultra',
+    shortDesc:'Snapdragon 8 Elite · Leica 50 Мп 1" · 6.73" · 120 Вт',
+    rating:'★★★★★ 4.8',
+    colors:[
+      {name:'Black',    hex:'#1A1A1A', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi15ultra/section2-img.jpg'},
+      {name:'White',    hex:'#F5F5F5', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi15ultra/section2-img-white.jpg'},
+      {name:'Titanium', hex:'#8A8A8A', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi15ultra/section2-img-titanium.jpg'},
+    ],
+    specs:[
+      ['Процессор','Snapdragon 8 Elite'],['Дисплей','6.73" LTPO AMOLED 120 Гц'],
+      ['Камера','50 Мп 1" + 50 Мп + 50 Мп Leica'],['Фронт','32 Мп'],
+      ['Аккумулятор','5500 мАч, 120 Вт'],['ОС','Android 15, HyperOS 2'],['Защита','IP68'],['ОЗУ','16 ГБ'],
+    ],
+    fullDesc:'Топовый камерофон от Xiaomi с камерой Leica. 1-дюймовый сенсор Sony LYT-900 — лидер в ночной съёмке. Быстрая зарядка 120 Вт заряжает за 23 минуты.',
+    storage:[
+      {label:'256 ГБ', price:79990},
+      {label:'512 ГБ', price:99990},
+    ]
+  },
+  {
+    id:'xi15tp', cat:'phones', brand:'Xiaomi', year:2025,
+    name:'Xiaomi 15T Pro',
+    shortDesc:'Dimensity 9400 · 6.67" AMOLED 144 Гц · Leica · 5000 мАч',
+    rating:'★★★★☆ 4.7',
+    colors:[
+      {name:'Midnight Black',hex:'#1A1A1A', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi15tpro/color-black.jpg'},
+      {name:'Titan Blue',    hex:'#2A4A8A', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi15tpro/color-blue.jpg'},
+      {name:'Titan Silver',  hex:'#C0C0C8', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi15tpro/color-silver.jpg'},
+    ],
+    specs:[
+      ['Процессор','Dimensity 9400'],['Дисплей','6.67" AMOLED 144 Гц'],
+      ['Камера','50 + 50 + 12 Мп Leica'],['Фронт','32 Мп'],
+      ['Аккумулятор','5000 мАч, 120 Вт'],['ОС','Android 15, HyperOS 2'],['Защита','IP68'],['ОЗУ','12 ГБ'],
+    ],
+    fullDesc:'Xiaomi 15T Pro с Dimensity 9400 и Leica камерой. 144 Гц дисплей, зарядка 120 Вт. Для фото-энтузиастов и геймеров.',
+    storage:[
+      {label:'256 ГБ', price:59990, oldPrice:69990},
+      {label:'512 ГБ', price:79990},
+    ]
+  },
+  {
+    id:'xi15', cat:'phones', brand:'Xiaomi', year:2025,
+    name:'Xiaomi 15',
+    shortDesc:'Snapdragon 8 Elite · 6.36" · Compact · 50 Мп Leica',
+    rating:'★★★★☆ 4.6',
+    colors:[
+      {name:'Black', hex:'#1A1A1A', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi15/color-black.jpg'},
+      {name:'White', hex:'#F5F5F5', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi15/color-white.jpg'},
+      {name:'Green', hex:'#2A6A3A', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi15/color-green.jpg'},
+    ],
+    specs:[
+      ['Процессор','Snapdragon 8 Elite'],['Дисплей','6.36" AMOLED 120 Гц'],
+      ['Камера','50 + 50 + 50 Мп Leica'],['Фронт','32 Мп'],
+      ['Аккумулятор','5240 мАч, 90 Вт'],['ОС','Android 15, HyperOS 2'],['Защита','IP68'],['ОЗУ','12 ГБ'],
+    ],
+    fullDesc:'Компактный флагман Xiaomi 2025 с тройной камерой Leica. Мощный Snapdragon 8 Elite, компактные размеры, быстрая зарядка 90 Вт.',
+    storage:[
+      {label:'256 ГБ', price:49990},
+      {label:'512 ГБ', price:69990},
+    ]
+  },
+
+  // xiaomi 2024
+  {
+    id:'xi14u', cat:'phones', brand:'Xiaomi', year:2024,
+    name:'Xiaomi 14 Ultra',
+    shortDesc:'Snapdragon 8 Gen 3 · Leica 1" · 6.73" · 90 Вт',
+    rating:'★★★★★ 4.8',
+    colors:[
+      {name:'Black', hex:'#1A1A1A', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi14ultra/section2-img-black.jpg'},
+      {name:'White', hex:'#F5F5F5', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi14ultra/section2-img-white.jpg'},
+    ],
+    specs:[
+      ['Процессор','Snapdragon 8 Gen 3'],['Дисплей','6.73" LTPO AMOLED 120 Гц'],
+      ['Камера','50 Мп 1" + 50 Мп + 50 Мп Leica'],['Фронт','32 Мп'],
+      ['Аккумулятор','5300 мАч, 90 Вт'],['ОС','Android 14, HyperOS'],['Защита','IP68'],['ОЗУ','16 ГБ'],
+    ],
+    fullDesc:'Флагманский камерофон Xiaomi 2024 с 1-дюймовым сенсором и объективами Leica. Переменная апертура f/1.63–f/4.0 на главной камере.',
+    storage:[
+      {label:'256 ГБ', price:64990, oldPrice:84990},
+      {label:'512 ГБ', price:84990, oldPrice:104990},
+    ]
+  },
+  {
+    id:'xi14t', cat:'phones', brand:'Xiaomi', year:2024,
+    name:'Xiaomi 14T',
+    shortDesc:'Dimensity 8300-Ultra · 6.67" · 50 Мп Leica · 5000 мАч',
+    rating:'★★★★☆ 4.5',
+    colors:[
+      {name:'Titan Black',   hex:'#1A1A1A', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi14t/color-black.jpg'},
+      {name:'Titan Blue',    hex:'#3A5A80', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi14t/color-blue.jpg'},
+      {name:'Lemon Green',   hex:'#8ABF3A', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi14t/color-green.jpg'},
+    ],
+    specs:[
+      ['Процессор','Dimensity 8300-Ultra'],['Дисплей','6.67" AMOLED 144 Гц'],
+      ['Камера','50 + 50 + 12 Мп Leica'],['Фронт','32 Мп'],
+      ['Аккумулятор','5000 мАч, 67 Вт'],['ОС','Android 14, HyperOS'],['Защита','IP68'],['ОЗУ','12 ГБ'],
+    ],
+    fullDesc:'Xiaomi 14T — доступный флагман с камерой Leica. 144 Гц дисплей, быстрая зарядка 67 Вт. Отличный выбор для любителей фотографии.',
+    storage:[
+      {label:'256 ГБ', price:39990, oldPrice:49990},
+      {label:'512 ГБ', price:54990},
+    ]
+  },
+
+  // xiaomi 2023
+  {
+    id:'xi13u', cat:'phones', brand:'Xiaomi', year:2023,
+    name:'Xiaomi 13 Ultra',
+    shortDesc:'Snapdragon 8 Gen 2 · Leica 1" · 6.73" · 90 Вт',
+    rating:'★★★★☆ 4.7',
+    colors:[
+      {name:'Black', hex:'#1A1A1A', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi13ultra/sec2-color-black.jpg'},
+      {name:'White', hex:'#F5F5F5', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomi13ultra/sec2-color-white.jpg'},
+    ],
+    specs:[
+      ['Процессор','Snapdragon 8 Gen 2'],['Дисплей','6.73" LTPO AMOLED 120 Гц'],
+      ['Камера','50 Мп 1" + 50 Мп + 50 Мп + 50 Мп Leica'],['Фронт','32 Мп'],
+      ['Аккумулятор','5000 мАч, 90 Вт'],['ОС','Android 13, MIUI 14'],['Защита','IP68'],['ОЗУ','12 ГБ'],
+    ],
+    fullDesc:'Легендарный камерофон 2023 с четырьмя объективами Leica. Первый смартфон с 1-дюймовым сенсором Leica. Отличная ценность сейчас.',
+    storage:[
+      {label:'256 ГБ', price:49990, oldPrice:74990},
+      {label:'512 ГБ', price:64990, oldPrice:89990},
+    ]
+  },
+
+  // ноутбуки apple
+  {
+    id:'mbpm4', cat:'laptops', brand:'Apple', year:2024,
+    name:'MacBook Pro M4 Pro 14"',
+    shortDesc:'Apple M4 Pro · 24 ГБ · Liquid Retina XDR · Space Black',
+    rating:'★★★★★ 4.9',
+    colors:[
+      {name:'Space Black', hex:'#252525', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp14-m4pro-spaceb-select-202411?wid=904&hei=840&fmt=jpeg&qlt=90'},
+      {name:'Silver',      hex:'#C0C0C0', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp14-m4pro-silver-select-202411?wid=904&hei=840&fmt=jpeg&qlt=90'},
+    ],
+    specs:[
+      ['Чип','Apple M4 Pro (12 ядер CPU)'],['ОЗУ','24 ГБ unified'],
+      ['Дисплей','14.2" Liquid Retina XDR 120 Гц'],['GPU','20-ядерный'],
+      ['Разъёмы','3× TB4, HDMI, MagSafe 3'],['АКБ','До 22 ч'],
+      ['ОС','macOS 15 Sequoia'],['Вес','1.61 кг'],
+    ],
+    fullDesc:'Профессиональный MacBook Pro с M4 Pro. Liquid Retina XDR 120 Гц, яркость 1000 нит. Для видеомонтажа, 3D-рендера и разработки. 22 ч автономности.',
+    storage:[
+      {label:'512 ГБ', price:219990},
+      {label:'1 ТБ',   price:249990},
+      {label:'2 ТБ',   price:299990},
+    ]
+  },
+  {
+    id:'mbpm3', cat:'laptops', brand:'Apple', year:2023,
+    name:'MacBook Pro M3 Pro 14"',
+    shortDesc:'Apple M3 Pro · 18 ГБ · Liquid Retina XDR · Space Black',
+    rating:'★★★★★ 4.8',
+    colors:[
+      {name:'Space Black', hex:'#252525', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp14-m3pro-spaceb-select-202310?wid=904&hei=840&fmt=jpeg&qlt=90'},
+      {name:'Silver',      hex:'#C0C0C0', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp14-m3pro-silver-select-202310?wid=904&hei=840&fmt=jpeg&qlt=90'},
+    ],
+    specs:[
+      ['Чип','Apple M3 Pro (11 ядер CPU)'],['ОЗУ','18 ГБ unified'],
+      ['Дисплей','14.2" Liquid Retina XDR 120 Гц'],['GPU','14-ядерный'],
+      ['Разъёмы','3× TB4, HDMI, MagSafe 3'],['АКБ','До 18 ч'],
+      ['ОС','macOS 15 Sequoia'],['Вес','1.61 кг'],
+    ],
+    fullDesc:'MacBook Pro M3 Pro 2023 — мощная машина для профессионалов. Space Black — эксклюзивный матовый цвет с нанотекстурой. Поддерживает до двух внешних мониторов.',
+    storage:[
+      {label:'512 ГБ', price:179990, oldPrice:219990},
+      {label:'1 ТБ',   price:209990, oldPrice:249990},
+    ]
+  },
+  {
+    id:'mbam313', cat:'laptops', brand:'Apple', year:2024,
+    name:'MacBook Air M3 13"',
+    shortDesc:'Apple M3 · 16 ГБ · 13.6" IPS · Fanless · Midnight',
+    rating:'★★★★★ 4.8',
+    colors:[
+      {name:'Midnight',  hex:'#1A1B2E', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-m3-midnight-select-202402?wid=904&hei=840&fmt=jpeg&qlt=90'},
+      {name:'Starlight', hex:'#FAF9F7', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-m3-starlight-select-202402?wid=904&hei=840&fmt=jpeg&qlt=90'},
+      {name:'Silver',    hex:'#C0C0C0', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-m3-silver-select-202402?wid=904&hei=840&fmt=jpeg&qlt=90'},
+      {name:'Sky Blue',  hex:'#B3D4E5', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-m3-skyblue-select-202402?wid=904&hei=840&fmt=jpeg&qlt=90'},
+    ],
+    specs:[
+      ['Чип','Apple M3 (8 ядер CPU)'],['ОЗУ','16 ГБ'],
+      ['Дисплей','13.6" Liquid Retina, 2560×1664'],['GPU','10-ядерный'],
+      ['Разъёмы','2× TB3, MagSafe'],['АКБ','До 18 ч'],
+      ['ОС','macOS 15 Sequoia'],['Вес','1.24 кг'],
+    ],
+    fullDesc:'Самый популярный ноутбук Apple. Тихий, без вентилятора, лёгкий — 1.24 кг. Чип M3 справляется с любыми задачами. 4 цвета на выбор.',
+    storage:[
+      {label:'256 ГБ', price:119990, oldPrice:129990},
+      {label:'512 ГБ', price:139990},
+    ]
+  },
+  {
+    id:'mbam315', cat:'laptops', brand:'Apple', year:2024,
+    name:'MacBook Air M3 15"',
+    shortDesc:'Apple M3 · 16 ГБ · 15.3" IPS · Большой экран',
+    rating:'★★★★☆ 4.7',
+    colors:[
+      {name:'Midnight',  hex:'#1A1B2E', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba15-m3-midnight-select-202402?wid=904&hei=840&fmt=jpeg&qlt=90'},
+      {name:'Starlight', hex:'#FAF9F7', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba15-m3-starlight-select-202402?wid=904&hei=840&fmt=jpeg&qlt=90'},
+      {name:'Silver',    hex:'#C0C0C0', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba15-m3-silver-select-202402?wid=904&hei=840&fmt=jpeg&qlt=90'},
+      {name:'Sky Blue',  hex:'#B3D4E5', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba15-m3-skyblue-select-202402?wid=904&hei=840&fmt=jpeg&qlt=90'},
+    ],
+    specs:[
+      ['Чип','Apple M3 (8 ядер CPU)'],['ОЗУ','16 ГБ'],
+      ['Дисплей','15.3" Liquid Retina, 2880×1864'],['GPU','10-ядерный'],
+      ['Разъёмы','2× TB3, MagSafe'],['АКБ','До 18 ч'],
+      ['ОС','macOS 15 Sequoia'],['Вес','1.51 кг'],
+    ],
+    fullDesc:'Большой MacBook Air для тех, кому важен экран. Тот же M3, та же пассивная система охлаждения, экран 15.3".',
+    storage:[
+      {label:'256 ГБ', price:139990, oldPrice:149990},
+      {label:'512 ГБ', price:159990},
+      {label:'1 ТБ',   price:194990},
+    ]
+  },
+  {
+    id:'mbam2', cat:'laptops', brand:'Apple', year:2023,
+    name:'MacBook Air M2 13"',
+    shortDesc:'Apple M2 · 8/16 ГБ · 13.6" · Новый дизайн 2022',
+    rating:'★★★★☆ 4.7',
+    colors:[
+      {name:'Midnight',  hex:'#1A1B2E', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-m2-midnight-select-202206?wid=904&hei=840&fmt=jpeg&qlt=90'},
+      {name:'Starlight', hex:'#FAF9F7', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-m2-starlight-select-202206?wid=904&hei=840&fmt=jpeg&qlt=90'},
+      {name:'Silver',    hex:'#C0C0C0', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-m2-silver-select-202206?wid=904&hei=840&fmt=jpeg&qlt=90'},
+      {name:'Space Gray',hex:'#5A5A5A', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-m2-space-select-202206?wid=904&hei=840&fmt=jpeg&qlt=90'},
+    ],
+    specs:[
+      ['Чип','Apple M2 (8 ядер CPU)'],['ОЗУ','8 ГБ или 16 ГБ'],
+      ['Дисплей','13.6" Liquid Retina, 2560×1664'],['GPU','8/10-ядерный'],
+      ['Разъёмы','2× TB3, MagSafe, 3.5 мм'],['АКБ','До 18 ч'],
+      ['ОС','macOS 15 Sequoia'],['Вес','1.24 кг'],
+    ],
+    fullDesc:'MacBook Air M2 с новым дизайном — без выемки вентиляции. MagSafe вернулся. Нотч для камеры 1080p. Доступная цена по сравнению с M3.',
+    storage:[
+      {label:'256 ГБ', price:89990, oldPrice:109990},
+      {label:'512 ГБ', price:109990, oldPrice:129990},
+    ]
+  },
+
+  // ноутбуки samsung
+  {
+    id:'sgb5p360', cat:'laptops', brand:'Samsung', year:2025,
+    name:'Samsung Galaxy Book5 Pro 360',
+    shortDesc:'Core Ultra 7 · 16" AMOLED 2-в-1 · 3К · S Pen · NPU AI',
+    rating:'★★★★☆ 4.7',
+    colors:[
+      {name:'Platinum Silver', hex:'#D0D0D8', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/xe960xdf-g1auk-front-silver?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Sapphire Blue',   hex:'#2A4A7F', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/xe960xdf-g1buk-front-blue?wid=650&hei=519&fmt=png-alpha&trim=true'},
+    ],
+    specs:[
+      ['Процессор','Intel Core Ultra 7 258V'],['ОЗУ','32 ГБ LPDDR5x'],
+      ['Дисплей','16" AMOLED 2-в-1, 2880×1800 60 Гц'],['GPU','Intel Arc 140V'],
+      ['АКБ','76 Вт·ч, до 18 ч'],['ОС','Windows 11'],['Вес','1.86 кг'],['S Pen','Встроен'],
+    ],
+    fullDesc:'Премиальный трансформер Samsung 2025. AMOLED 3К дисплей 60 Гц, S Pen в корпусе. NPU для ИИ-задач Windows 11 Copilot+. Идеален для творческих профессий.',
+    storage:[
+      {label:'512 ГБ', price:139990},
+      {label:'1 ТБ',   price:169990},
+    ]
+  },
+  {
+    id:'sgb4p', cat:'laptops', brand:'Samsung', year:2024,
+    name:'Samsung Galaxy Book4 Pro 16"',
+    shortDesc:'Core Ultra 7 · 16" AMOLED · 2.8К · 120 Гц · 76 Вт·ч',
+    rating:'★★★★☆ 4.6',
+    colors:[
+      {name:'Moonstone Gray', hex:'#6A6A7A', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/np960xgl-xg1uk-front-gray?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Platinum Silver', hex:'#D0D0D8', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/np960xgl-xg3uk-front-silver?wid=650&hei=519&fmt=png-alpha&trim=true'},
+    ],
+    specs:[
+      ['Процессор','Intel Core Ultra 7 155H'],['ОЗУ','16 ГБ LPDDR5x'],
+      ['Дисплей','16" Dynamic AMOLED 2X, 2880×1800 120 Гц'],['GPU','Intel Arc + Iris Xe'],
+      ['АКБ','76 Вт·ч, до 22 ч'],['ОС','Windows 11'],['Вес','1.55 кг'],['Wi-Fi','Wi-Fi 7'],
+    ],
+    fullDesc:'Тонкий и лёгкий ноутбук 2024 с ярким AMOLED дисплеем 120 Гц. Intel Core Ultra с NPU для AI-задач. До 22 часов автономной работы.',
+    storage:[
+      {label:'512 ГБ', price:119990, oldPrice:139990},
+      {label:'1 ТБ',   price:149990},
+    ]
+  },
+  {
+    id:'sgb3u', cat:'laptops', brand:'Samsung', year:2023,
+    name:'Samsung Galaxy Book3 Ultra 16"',
+    shortDesc:'Core i9-13900H · GeForce RTX 4070 · 16" AMOLED 120 Гц',
+    rating:'★★★★☆ 4.5',
+    colors:[
+      {name:'Graphite', hex:'#3A3A3A', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/np960xfh-xa1uk-front-graphite?wid=650&hei=519&fmt=png-alpha&trim=true'},
+    ],
+    specs:[
+      ['Процессор','Intel Core i9-13900H'],['ОЗУ','32 ГБ DDR5'],
+      ['Дисплей','16" Dynamic AMOLED, 2880×1800 120 Гц'],['GPU','NVIDIA RTX 4070 8 ГБ'],
+      ['АКБ','76 Вт·ч'],['ОС','Windows 11 Pro'],['Вес','1.79 кг'],['TGP','80 Вт'],
+    ],
+    fullDesc:'Мощный ноутбук Samsung 2023 с дискретной RTX 4070. Топовая производительность для игр и работы с 3D. Яркий AMOLED экран.',
+    storage:[
+      {label:'1 ТБ', price:119990, oldPrice:159990},
+      {label:'2 ТБ', price:149990},
+    ]
+  },
+
+  // наушники apple
+  {
+    id:'apro3', cat:'audio', brand:'Apple', year:2025,
+    name:'Apple AirPods Pro 3',
+    shortDesc:'H3 · ANC Gen 3 · Spatial Audio · USB-C · 36 ч (с кейсом)',
+    rating:'★★★★★ 4.9',
+    colors:[
+      {name:'White', hex:'#F5F5ED', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-pro-3-202509-select?wid=904&hei=840&fmt=jpeg&qlt=90'},
+    ],
+    specs:[
+      ['Чип','H3'],['АШП','ANC Gen 3'],
+      ['Spatial Audio','Да, с отслеживанием головы'],['Автономность','9 ч (36 ч с кейсом)'],
+      ['Кейс','MagSafe, USB-C, Qi2'],['Защита','IPX4'],['Bluetooth','5.4'],['Год','2025'],
+    ],
+    fullDesc:'AirPods Pro 3 с чипом H3. ANC третьего поколения подавляет шумы лучше, чем когда-либо. Spatial Audio адаптируется к форме уха. Apple Intelligence.',
+    storage:[{label:'Стандарт', price:32990}]
+  },
+  {
+    id:'a4anc', cat:'audio', brand:'Apple', year:2024,
+    name:'Apple AirPods 4 с ANC',
+    shortDesc:'H2 · ANC · Open-fit · MagSafe · 30 ч (с кейсом)',
+    rating:'★★★★☆ 4.7',
+    colors:[
+      {name:'White', hex:'#F5F5ED', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-4-202409-select-anc?wid=904&hei=840&fmt=jpeg&qlt=90'},
+    ],
+    specs:[
+      ['Чип','H2'],['АШП','Активное шумоподавление'],
+      ['Форм-фактор','Открытые (без насадок)'],['Автономность','5 ч (30 ч с кейсом)'],
+      ['Кейс','MagSafe, USB-C'],['Защита','IP54'],['Bluetooth','5.3'],['Год','2024'],
+    ],
+    fullDesc:'AirPods 4 ANC — первые открытые наушники с активным шумоподавлением. Не вставляются в ушной канал. Удобны для долгого ношения.',
+    storage:[{label:'Стандарт', price:21999, oldPrice:25990}]
+  },
+  {
+    id:'a4', cat:'audio', brand:'Apple', year:2024,
+    name:'Apple AirPods 4',
+    shortDesc:'H2 · Open-fit · Transparency · USB-C · 30 ч',
+    rating:'★★★★☆ 4.6',
+    colors:[
+      {name:'White', hex:'#F5F5ED', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-4-202409-select?wid=904&hei=840&fmt=jpeg&qlt=90'},
+    ],
+    specs:[
+      ['Чип','H2'],['АШП','Нет (есть Transparency Mode)'],
+      ['Форм-фактор','Открытые'],['Автономность','5 ч (30 ч с кейсом)'],
+      ['Кейс','USB-C'],['Защита','IP54'],['Bluetooth','5.3'],['Год','2024'],
+    ],
+    fullDesc:'AirPods 4 без ANC — более доступная версия. Тот же открытый дизайн, чип H2, Transparency Mode. USB-C зарядка.',
+    storage:[{label:'Стандарт', price:15999, oldPrice:18990}]
+  },
+  {
+    id:'apro2', cat:'audio', brand:'Apple', year:2023,
+    name:'Apple AirPods Pro 2',
+    shortDesc:'H2 · ANC Gen 2 · Spatial Audio · USB-C/Lightning',
+    rating:'★★★★★ 4.8',
+    colors:[
+      {name:'White', hex:'#F5F5ED', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MTJV3?wid=904&hei=840&fmt=jpeg&qlt=90'},
+    ],
+    specs:[
+      ['Чип','H2'],['АШП','ANC Gen 2 (2× мощнее)'],
+      ['Spatial Audio','Да'],['Автономность','6 ч (30 ч с кейсом)'],
+      ['Кейс','MagSafe, USB-C/Lightning'],['Защита','IPX4'],['Bluetooth','5.3'],['Год','2023'],
+    ],
+    fullDesc:'AirPods Pro 2 с улучшенным ANC. Режим адаптивного прозрачного режима. Conversation Awareness снижает громкость при разговоре.',
+    storage:[{label:'Стандарт', price:24990, oldPrice:32990}]
+  },
+  {
+    id:'amax2', cat:'audio', brand:'Apple', year:2024,
+    name:'Apple AirPods Max 2',
+    shortDesc:'H2 · Over-ear · ANC · USB-C · Mesh + Alum · Spatial Audio',
+    rating:'★★★★☆ 4.7',
+    colors:[
+      {name:'Midnight',  hex:'#1A1B2E', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-max-202409-select-midnight?wid=904&hei=840&fmt=jpeg&qlt=90'},
+      {name:'Starlight', hex:'#FAF9F7', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-max-202409-select-starlight?wid=904&hei=840&fmt=jpeg&qlt=90'},
+      {name:'Orange',    hex:'#D4601A', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-max-202409-select-orange?wid=904&hei=840&fmt=jpeg&qlt=90'},
+      {name:'Purple',    hex:'#7A5A9A', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-max-202409-select-purple?wid=904&hei=840&fmt=jpeg&qlt=90'},
+      {name:'Blue',      hex:'#3A5A80', img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-max-202409-select-blue?wid=904&hei=840&fmt=jpeg&qlt=90'},
+    ],
+    specs:[
+      ['Чип','H2'],['АШП','Класс лучший среди AirPods'],
+      ['Форм-фактор','Накладные'],['Автономность','До 30 ч с ANC'],
+      ['Порт','USB-C'],['Материалы','Алюминий + сетка'],['Год','2024'],['Вес','385 г'],
+    ],
+    fullDesc:'AirPods Max 2 — флагманские накладные наушники Apple с USB-C. Обновлённые 5 цветов. Лучший в классе Spatial Audio и ANC от Apple.',
+    storage:[{label:'Стандарт', price:64990}]
+  },
+
+  // наушники samsung
+  {
+    id:'sb4p', cat:'audio', brand:'Samsung', year:2025,
+    name:'Samsung Galaxy Buds4 Pro',
+    shortDesc:'360 Audio · Hi-Fi ANC · 24 Bit · 30 ч · IPX7',
+    rating:'★★★★☆ 4.7',
+    colors:[
+      {name:'White', hex:'#F5F5ED', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-r640nzwabtu/gallery/uk-galaxy-buds4-pro-r640-sm-r640nzwabtu-542352234?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Black', hex:'#1A1A1A', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-r640nzkabtu/gallery/uk-galaxy-buds4-pro-r640-sm-r640nzkabtu-542352234?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Silver',hex:'#C0C0C8', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-r640nzsabtu/gallery/uk-galaxy-buds4-pro-r640-sm-r640nzsabtu-542352234?wid=650&hei=519&fmt=png-alpha&trim=true'},
+    ],
+    specs:[
+      ['АШП','Тройное ANC'],['Звук','360 Audio, 24 Bit Hi-Fi'],
+      ['Автономность','6 ч (30 ч с кейсом)'],['Защита','IPX7'],
+      ['Bluetooth','5.4'],['Год','2025'],['Интеграция','Galaxy AI Sound'],['Кодек','Samsung SSC Lossless'],
+    ],
+    fullDesc:'Флагманские TWS Samsung 2025. Тройное ANC, 24-битный звук Hi-Fi, SSC Lossless. Galaxy AI автоматически настраивает звук под окружение.',
+    storage:[{label:'Стандарт', price:19990, oldPrice:24990}]
+  },
+  {
+    id:'sb3p', cat:'audio', brand:'Samsung', year:2024,
+    name:'Samsung Galaxy Buds3 Pro',
+    shortDesc:'AI ANC · 360 Audio · 6 Гц–21 кГц · IPX7',
+    rating:'★★★★☆ 4.6',
+    colors:[
+      {name:'White', hex:'#F5F5ED', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-r630nzwabtu/gallery/uk-galaxy-buds3-pro-r630-sm-r630nzwabtu-thumb-541025558?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Silver',hex:'#C0C0C8', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-r630nzsabtu/gallery/uk-galaxy-buds3-pro-r630-sm-r630nzsabtu-thumb-541025558?wid=650&hei=519&fmt=png-alpha&trim=true'},
+    ],
+    specs:[
+      ['АШП','AI ANC'],['Звук','360 Audio, 24 Bit'],
+      ['Автономность','7 ч (30 ч с кейсом)'],['Защита','IPX7'],
+      ['Bluetooth','5.4'],['Год','2024'],['Кодек','Samsung SSC HiFi'],['Вес','5.9 г'],
+    ],
+    fullDesc:'Galaxy Buds3 Pro с ИИ-управлением ANC. Дизайн с открытой ушной петлёй, улучшенная эргономика. Кодек SSC HiFi для высококачественного звука.',
+    storage:[{label:'Стандарт', price:14990, oldPrice:19990}]
+  },
+  {
+    id:'sb2p', cat:'audio', brand:'Samsung', year:2023,
+    name:'Samsung Galaxy Buds2 Pro',
+    shortDesc:'360 Audio · ANC · 24-bit Hi-Fi · IPX7 · 8 ч',
+    rating:'★★★★☆ 4.5',
+    colors:[
+      {name:'Bora Purple', hex:'#7A5A9A', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-r510nzaabtu/gallery/uk-galaxy-buds2-pro-r510-sm-r510nzaabtu-thumb-533254041?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'Graphite',    hex:'#3A3A3A', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-r510nzaabtu/gallery/uk-galaxy-buds2-pro-r510-sm-r510nzkabtu-thumb-533254041?wid=650&hei=519&fmt=png-alpha&trim=true'},
+      {name:'White',       hex:'#F5F5ED', img:'https://images.samsung.com/is/image/samsung/p6pim/uk/sm-r510nzaabtu/gallery/uk-galaxy-buds2-pro-r510-sm-r510nzwabtu-thumb-533254041?wid=650&hei=519&fmt=png-alpha&trim=true'},
+    ],
+    specs:[
+      ['АШП','ANC Hi-Fi Grade'],['Звук','360 Audio, 24-bit Hi-Fi'],
+      ['Автономность','5 ч (29 ч с кейсом)'],['Защита','IPX7'],
+      ['Bluetooth','5.3'],['Год','2023'],['Кодек','Samsung SSC-HiFi'],['Вес','5.5 г'],
+    ],
+    fullDesc:'Galaxy Buds2 Pro — отличный вариант по сниженной цене. ANC, 360 Audio и 24-битный звук. Компактный дизайн, длительная носка.',
+    storage:[{label:'Стандарт', price:9990, oldPrice:16990}]
+  },
+
+  // наушники xiaomi
+  {
+    id:'xi5pro', cat:'audio', brand:'Xiaomi', year:2025,
+    name:'Xiaomi Buds 5 Pro',
+    shortDesc:'LDAC · ANC · Hi-Res Wireless · 42 дБ · 10 Гц–40 кГц',
+    rating:'★★★★★ 4.8',
+    colors:[
+      {name:'Black', hex:'#1A1A1A', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomibuds5pro/color-black.jpg'},
+      {name:'White', hex:'#F5F5F5', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomibuds5pro/color-white.jpg'},
+    ],
+    specs:[
+      ['АШП','Адаптивное ANC до -52 дБ'],['Кодек','LDAC, LHDC 5.0, AAC'],
+      ['Автономность','8 ч (36 ч с кейсом)'],['Звук','Hi-Res Wireless, 10 Гц–40 кГц'],
+      ['Bluetooth','5.4'],['Год','2025'],['Сертификат','Hi-Res Audio, Hi-Res Wireless'],['Вес','6.1 г'],
+    ],
+    fullDesc:'Xiaomi Buds 5 Pro — флагманские TWS с LDAC и адаптивным ANC -52 дБ. Hi-Res Wireless сертификация. Лучший звук в своём классе без переплаты за бренд.',
+    storage:[{label:'Стандарт', price:14990, oldPrice:17990}]
+  },
+  {
+    id:'xi5', cat:'audio', brand:'Xiaomi', year:2024,
+    name:'Xiaomi Buds 5',
+    shortDesc:'ANC · LDAC · 10 мм · 40 ч с кейсом · IP54',
+    rating:'★★★★☆ 4.6',
+    colors:[
+      {name:'Black', hex:'#1A1A1A', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomibuds5/color-black.jpg'},
+      {name:'White', hex:'#F5F5F5', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomibuds5/color-white.jpg'},
+      {name:'Gray',  hex:'#6A6A6A', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomibuds5/color-gray.jpg'},
+    ],
+    specs:[
+      ['АШП','Адаптивное ANC до -46 дБ'],['Кодек','LDAC, AAC, SBC'],
+      ['Автономность','8 ч (40 ч с кейсом)'],['Динамик','10 мм'],
+      ['Bluetooth','5.4'],['Год','2024'],['Защита','IP54'],['Вес','5.4 г'],
+    ],
+    fullDesc:'Xiaomi Buds 5 — отличное соотношение цена/качество. LDAC, ANC -46 дБ, 40 часов суммарной работы. IP54 для тренировок.',
+    storage:[{label:'Стандарт', price:9990, oldPrice:12990}]
+  },
+  {
+    id:'xi4pro', cat:'audio', brand:'Xiaomi', year:2023,
+    name:'Xiaomi Buds 4 Pro',
+    shortDesc:'LHDC · ANC · Hi-Res · 9 мм · IP54',
+    rating:'★★★★☆ 4.5',
+    colors:[
+      {name:'Black', hex:'#1A1A1A', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomibuds4pro/color-black.jpg'},
+      {name:'White', hex:'#F5F5F5', img:'https://i01.appmifile.com/webfile/globalimg/products/m/xiaomibuds4pro/color-white.jpg'},
+    ],
+    specs:[
+      ['АШП','Адаптивное ANC до -48 дБ'],['Кодек','LHDC 5.0, AAC, SBC'],
+      ['Автономность','9 ч (38 ч с кейсом)'],['Динамик','9.2 мм'],
+      ['Bluetooth','5.3'],['Год','2023'],['Защита','IP54'],['Вес','4.9 г'],
+    ],
+    fullDesc:'Xiaomi Buds 4 Pro — проверенная временем модель по сниженной цене. LHDC 5.0, ANC -48 дБ, отличная автономность 9 часов.',
+    storage:[{label:'Стандарт', price:6990, oldPrice:9990}]
+  },
+];
+
+// состояние
+let currentCat   = 'phones';
+let currentBrand = 'all';
+let currentYear  = 'all';
+let currentProdId = null;
+let cart = [];
+let selectedStorage = {};
+let selectedColor   = {};
+let compareList = [];    // max 4 product 
+
+
+const CAT_BRANDS = {
+  phones:  [{val:'all',label:'Все бренды'},{val:'Apple',label:'🍎 Apple'},{val:'Samsung',label:'🔵 Samsung'},{val:'Xiaomi',label:'🔴 Xiaomi'}],
+  laptops: [{val:'all',label:'Все бренды'},{val:'Apple',label:'🍎 Apple'},{val:'Samsung',label:'🔵 Samsung'}],
+  audio:   [{val:'all',label:'Все бренды'},{val:'Apple',label:'🍎 Apple'},{val:'Samsung',label:'🔵 Samsung'},{val:'Xiaomi',label:'🔴 Xiaomi'}],
+};
+
+// навигация между страницами
+function setView(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  window.scrollTo(0,0);
+}
+function goCatalog(){setView('catalog'); renderGrid();}
+function goCart(){renderCart();setView('cart')}
+function goProduct(id){
+  currentProdId=id;
+  renderDetail(id);
+  document.getElementById('view-product').classList.remove('active');
+  document.getElementById('view-product').style.display='block';
+  void document.getElementById('view-product').offsetWidth;
+  document.getElementById('view-product').style.display='';
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-product').classList.add('active');
+  window.scrollTo(0,0);
+}
+function openCompare(){renderCompare();setView('compare')}
+
+// фильтры
+function setCategory(cat, btn){
+  currentCat=cat; currentBrand='all'; currentYear='all';
+  document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildBrandFilter();
+  buildYearFilter();
+  renderGrid();
+}
+function buildBrandFilter(){
+  const brands = CAT_BRANDS[currentCat]||[];
+  const el = document.getElementById('brandFilter');
+  el.innerHTML = brands.map(b=>`
+    <button class="brand-btn${b.val===currentBrand?' active':''}" 
+      data-brand="${b.val}" onclick="setBrand('${b.val}',this)">${b.label}</button>
+  `).join('');
+}
+function buildYearFilter(){
+  const el = document.getElementById('yearFilter');
+  const years = ['all',2023,2024,2025];
+  el.innerHTML = `<span class="year-label">Год:</span>` + years.map(y=>`
+    <button class="year-btn${y===currentYear?' active':''}" 
+      onclick="setYear(${y==='all'?"'all'":y},this)">${y==='all'?'Все':y}</button>
+  `).join('');
+}
+function setBrand(brand, btn){
+  currentBrand=brand;
+  document.querySelectorAll('.brand-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGrid();
+}
+function setYear(year, btn){
+  currentYear=year;
+  document.querySelectorAll('.year-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGrid();
+}
+
+// рендер сетки
+function renderGrid(){
+  const grid=document.getElementById('productsGrid');
+  const filtered=PRODUCTS.filter(p=>{
+    if(p.cat!==currentCat) return false;
+    if(currentBrand!=='all' && p.brand!==currentBrand) return false;
+    if(currentYear!=='all' && p.year!==currentYear) return false;
+    return true;
+  });
+  if(!filtered.length){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:80px;color:var(--muted)">Нет товаров в этой категории</div>';
+    return;
+  }
+  grid.innerHTML=filtered.map(p=>cardHTML(p)).join('');
+}
+
+/* картинки грузятся через прокси — CDN режет прямые запросы */
+
+function normalizeImgUrl(url){
+  if(!url) return '';
+  let u = url;
+  // Apple 900x900 jpeg
+  u = u.replace(/wid=\d+&hei=\d+&fmt=p-jpg(&qlt=\d+)?/, 'wid=900&hei=900&fmt=jpeg&qlt=90');
+  // Samsung jpg
+  u = u.replace(/wid=\d+&hei=\d+&fmt=png-alpha(&trim=true)?/, 'wid=650&hei=519&fmt=jpg&qlt=90');
+  u = u.replace(/fmt=png-alpha(&trim=true)?/, 'fmt=jpg&qlt=90');
+  return u;
+}
+
+function proxyImg(url){
+  if(!url) return '';
+  return 'https://wsrv.nl/?url=' + encodeURIComponent(normalizeImgUrl(url)) + '&output=jpg&q=90&n=-1';
+}
+
+// если wsrv.nl слом то ост
+const FALLBACKS = [
+  u => 'https://corsproxy.io/?' + encodeURIComponent(normalizeImgUrl(u)),
+  u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(normalizeImgUrl(u)),
+];
+
+function fallbackImg(el, raw){
+  const n = parseInt(el.dataset.fb || '0');
+  if(n >= FALLBACKS.length){ el.style.opacity='.08'; el.style.filter='grayscale(1)'; return; }
+  el.dataset.fb = n + 1;
+  el.src = FALLBACKS[n](raw);
+}
+
+function getImg(p){
+  const ci=selectedColor[p.id]??0;
+  const rawUrl=p.colors[Math.min(ci,p.colors.length-1)].img;
+  return proxyImg(rawUrl);
+}
+
+function cardHTML(p){
+  const sel=selectedStorage[p.id]??p.storage[0].label;
+  const sto=p.storage.find(s=>s.label===sel)||p.storage[0];
+  const ci=selectedColor[p.id]??0;
+  const img=getImg(p);
+  const chips=p.storage.map(s=>
+    `<button class="chip${s.label===sel?' sel':''}" onclick="selectStorage('${p.id}','${s.label}',event)">${s.label}</button>`
+  ).join('');
+  const colorDots=p.colors.map((c,i)=>
+    `<button class="color-dot${i===ci?' sel':''}" style="background:${c.hex}" title="${c.name}" onclick="selectColor('${p.id}',${i},event)"></button>`
+  ).join('');
+  const bClass=p.brand==='Apple'?'badge-apple':p.brand==='Samsung'?'badge-samsung':p.brand==='Xiaomi'?'badge-xiaomi':'badge-audio';
+  const isInCmp=compareList.includes(p.id);
+  const priceHTML=sto.oldPrice
+    ?`<div class="price-block">
+        <div class="price-old">${fmt(sto.oldPrice)}</div>
+        <div class="price-new">${fmt(sto.price)} <span class="discount-tag">−${Math.round((1-sto.price/sto.oldPrice)*100)}%</span></div>
+      </div>`
+    :`<div class="price-block"><div class="price-new">${fmt(sto.price)}</div></div>`;
+  const emoji=p.cat==='phones'?'📱':p.cat==='laptops'?'💻':'🎧';
+  return `
+  <div class="card" id="card-${p.id}">
+    <div class="card-img">
+      <span class="brand-badge ${bClass}">${p.brand}</span>
+      <span class="year-badge">${p.year}</span>
+      <span class="card-img-placeholder">${emoji}</span>
+      <img src="${img}" alt="${p.name}" onerror="fallbackImg(this,'${p.colors[selectedColor[p.id]??0]?.img||p.colors[0].img}')" id="cimg-${p.id}">
+      <div class="overlay"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-name">${p.name}</div>
+      <div class="card-desc">${p.shortDesc}</div>
+      ${p.colors.length>1?`<div class="color-picker-row">
+        <span class="color-label">Цвет</span>
+        <div class="color-dots">${colorDots}</div>
+        <span class="color-name-tip" id="cname-${p.id}">${p.colors[ci].name}</span>
+      </div>`:''}
+      ${p.storage[0].label!=='Стандарт'?`<div class="storage-label">Память</div><div class="storage-chips">${chips}</div>`:''}
+      <div class="price-row">
+        <div id="price-${p.id}">${priceHTML}</div>
+        <div class="rating">${p.rating}</div>
+      </div>
+      <div class="card-actions">
+        <button class="btn-buy" onclick="addToCart('${p.id}')">В корзину</button>
+        <button class="btn-more" onclick="goProduct('${p.id}')">Подробнее →</button>
+        <button class="btn-cmp${isInCmp?' active':''}" id="cmpbtn-${p.id}" onclick="toggleCompare('${p.id}',event)" title="Добавить к сравнению">⚖</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function selectColor(pid, idx, e){
+  e?.stopPropagation();
+  selectedColor[pid]=idx;
+  const p=PRODUCTS.find(x=>x.id===pid);
+  const img=proxyImg(p.colors[idx].img); 
+  
+  const ci=document.getElementById('cimg-'+pid);
+  if(ci){
+    ci.dataset.fb='0'; 
+    ci.style.opacity='.3';
+    setTimeout(()=>{ci.src=img;ci.style.opacity='';},200);
+  }
+  
+  const card=document.getElementById('card-'+pid);
+  if(card){
+    card.querySelectorAll('.color-dot').forEach((d,i)=>d.classList.toggle('sel',i===idx));
+    const nt=document.getElementById('cname-'+pid);
+    if(nt) nt.textContent=p.colors[idx].name;
+  }
+  
+  const di=document.getElementById('detailImg');
+  if(di && currentProdId===pid){
+    di.dataset.raw=p.colors[idx].img; 
+    di.dataset.fb='0';                 
+    di.style.opacity='.3';
+    setTimeout(()=>{di.src=img;di.style.opacity='1';},200);
+    document.querySelectorAll('.detail-color-dot').forEach((d,i)=>d.classList.toggle('sel',i===idx));
+  }
+}
+
+function selectStorage(pid, label, e){
+  e?.stopPropagation();
+  selectedStorage[pid]=label;
+  const p=PRODUCTS.find(x=>x.id===pid);
+  const sto=p.storage.find(s=>s.label===label);
+  const card=document.getElementById('card-'+pid);
+  if(!card) return;
+  card.querySelectorAll('.chip').forEach(c=>c.classList.toggle('sel',c.textContent===label));
+  const priceEl=document.getElementById('price-'+pid);
+  if(priceEl){
+    priceEl.innerHTML=sto.oldPrice
+      ?`<div class="price-block"><div class="price-old">${fmt(sto.oldPrice)}</div><div class="price-new">${fmt(sto.price)} <span class="discount-tag">−${Math.round((1-sto.price/sto.oldPrice)*100)}%</span></div></div>`
+      :`<div class="price-block"><div class="price-new">${fmt(sto.price)}</div></div>`;
+  }
+}
+
+// страница товара
+function renderDetail(id){
+  const p=PRODUCTS.find(x=>x.id===id);
+  if(!p) return;
+  const ci=selectedColor[p.id]??0;
+  const img=getImg(p);
+  const rawImg=p.colors[Math.min(ci,p.colors.length-1)].img;
+  const detImg=document.getElementById('detailImg');
+  detImg.dataset.raw=rawImg; 
+  detImg.src=img;
+  detImg.alt=p.name;
+  detImg.style.opacity='1';
+  document.getElementById('detailImgPlaceholder').textContent=p.cat==='phones'?'📱':p.cat==='laptops'?'💻':'🎧';
+
+  const sel=selectedStorage[p.id]??p.storage[0].label;
+  const sto=p.storage.find(s=>s.label===sel)||p.storage[0];
+
+  const specsHTML=p.specs.map(([k,v])=>`<div class="spec-item"><div class="spec-key">${k}</div><div class="spec-val">${v}</div></div>`).join('');
+  const chips=p.storage.map(s=>`
+    <button class="chip${s.label===sel?' sel':''}" id="dchip-${p.id}-${s.label}" onclick="selectDetailStorage('${p.id}','${s.label}')">${s.label}</button>
+  `).join('');
+  const colorDots=p.colors.map((c,i)=>`
+    <button class="detail-color-dot${i===ci?' sel':''}" style="background:${c.hex}" title="${c.name}" onclick="selectColor('${p.id}',${i})"></button>
+  `).join('');
+  const isInCmp=compareList.includes(p.id);
+  const priceHTML=sto.oldPrice
+    ?`<div class="detail-price-block"><div class="detail-price-old">${fmt(sto.oldPrice)}</div><div class="detail-price" id="detailPrice">${fmt(sto.price)}</div></div><span class="discount-tag" style="font-size:.8rem">−${Math.round((1-sto.price/sto.oldPrice)*100)}%</span>`
+    :`<div class="detail-price-block"><div class="detail-price" id="detailPrice">${fmt(sto.price)}</div></div>`;
+
+  document.getElementById('detailInfo').innerHTML=`
+    <div class="detail-brand">${p.brand} · ${p.year} · ${p.cat==='phones'?'Смартфон':p.cat==='laptops'?'Ноутбук':'Наушники'}</div>
+    <div class="detail-name">${p.name}</div>
+    <div class="detail-short">${p.fullDesc}</div>
+    ${p.colors.length>1?`<div><div class="detail-storage-label" style="margin-bottom:8px">Цвет: <strong style="color:var(--text)" id="detailColorName">${p.colors[ci].name}</strong></div>
+    <div class="detail-color-picker">${colorDots}</div></div>`:''}
+    <div class="specs-grid">${specsHTML}</div>
+    ${p.storage[0].label!=='Стандарт'?`<div>
+      <div class="detail-storage-label" style="margin-bottom:10px">Объём памяти</div>
+      <div class="detail-chips">${chips}</div>
+    </div>`:''}
+    <div class="detail-price-row">${priceHTML}<div class="rating" style="font-size:.9rem;margin-left:auto">${p.rating}</div></div>
+    <div class="detail-actions">
+      <button class="btn-detail-buy" onclick="addToCart('${p.id}')">🛒 В корзину</button>
+      <button class="btn-detail-cmp${isInCmp?' active':''}" id="detailCmpBtn" onclick="toggleCompare('${p.id}')">
+        ${isInCmp?'✓ В сравнении':'⚖ Сравнить'}
+      </button>
+      <button class="btn-detail-call" onclick="openCallModal('${p.name}')">📞 Позвонить</button>
+    </div>
+  `;
+}
+
+function selectDetailStorage(pid, label){
+  selectedStorage[pid]=label;
+  const p=PRODUCTS.find(x=>x.id===pid);
+  const sto=p.storage.find(s=>s.label===label);
+  document.querySelectorAll(`[id^="dchip-${pid}"]`).forEach(c=>c.classList.toggle('sel',c.id===`dchip-${pid}-${label}`));
+  const dp=document.getElementById('detailPrice');
+  if(dp) dp.textContent=fmt(sto.price);
+}
+
+// сравнение
+function toggleCompare(pid, e){
+  e?.stopPropagation();
+  if(compareList.includes(pid)){
+    compareList=compareList.filter(x=>x!==pid);
+    showToast('Убрано из сравнения');
+  } else {
+    if(compareList.length>=4){showToast('⚠ Максимум 4 товара для сравнения');return;}
+    compareList.push(pid);
+    showToast('✅ Добавлено к сравнению');
+  }
+  updateCompareUI();
+}
+function removeFromCompare(pid){
+  compareList=compareList.filter(x=>x!==pid);
+  updateCompareUI();
+  renderCompare();
+}
+function clearCompare(){
+  compareList=[];
+  updateCompareUI();
+}
+function updateCompareUI(){
+  const bar=document.getElementById('compareBar');
+  const navBtn=document.getElementById('navCmpBtn');
+  const badge=document.getElementById('navCmpBadge');
+  badge.textContent=compareList.length;
+  if(compareList.length>0){
+    bar.classList.add('open');
+    navBtn.style.display='flex';
+  } else {
+    bar.classList.remove('open');
+    navBtn.style.display='none';
+  }
+  
+  const items=document.getElementById('cmpBarItems');
+  const filled=compareList.map(id=>{
+    const p=PRODUCTS.find(x=>x.id===id);
+    return `<div class="cmp-bar-item">
+      <span class="cmp-bar-item-name">${p.name}</span>
+      <button class="cmp-bar-item-del" onclick="removeFromCompare('${id}')">✕</button>
+    </div>`;
+  });
+  const slots=Array(Math.max(0,2-compareList.length)).fill('<div class="cmp-bar-slot">+ добавить товар</div>');
+  items.innerHTML=filled.join('')+slots.join('');
+  
+  PRODUCTS.forEach(p=>{
+    const btn=document.getElementById('cmpbtn-'+p.id);
+    if(btn) btn.classList.toggle('active',compareList.includes(p.id));
+  });
+  
+  if(currentProdId){
+    const db=document.getElementById('detailCmpBtn');
+    if(db){
+      const inc=compareList.includes(currentProdId);
+      db.classList.toggle('active',inc);
+      db.textContent=inc?'✓ В сравнении':'⚖ Сравнить';
+    }
+  }
+}
+
+function renderCompare(){
+  const el=document.getElementById('compareContent');
+  if(!compareList.length){
+    el.innerHTML='<div class="compare-empty">Добавьте товары в сравнение из каталога — нажмите ⚖ на карточке товара</div>';
+    return;
+  }
+  const products=compareList.map(id=>PRODUCTS.find(x=>x.id===id)).filter(Boolean);
+  
+  const allSpecKeys=[...new Set(products.flatMap(p=>p.specs.map(([k])=>k)))];
+  const thead=`<thead><tr>
+    <th style="text-align:left;min-width:140px;background:var(--card2)">Характеристика</th>
+    ${products.map(p=>`<th>
+      <div class="cmp-col-header">
+        <img class="cmp-product-img" src="${getImg(p)}" alt="${p.name}" onerror="fallbackImg(this,'${p.colors[selectedColor[p.id]??0]?.img||p.colors[0].img}')">
+        <div class="cmp-product-brand">${p.brand} · ${p.year}</div>
+        <div class="cmp-product-name">${p.name}</div>
+        <div class="cmp-product-price">${fmt((p.storage.find(s=>s.label===(selectedStorage[p.id]??p.storage[0].label))||p.storage[0]).price)}</div>
+        <button class="btn-cmp-remove" onclick="removeFromCompare('${p.id}')">✕ Убрать</button>
+      </div>
+    </th>`).join('')}
+  </tr></thead>`;
+
+  const rows=[
+    ['💰 Цена', products.map(p=>{
+      const sto=p.storage.find(s=>s.label===(selectedStorage[p.id]??p.storage[0].label))||p.storage[0];
+      return sto.oldPrice?`<span style="text-decoration:line-through;color:var(--muted);font-size:.8rem">${fmt(sto.oldPrice)}</span> ${fmt(sto.price)}`:`<strong style="color:var(--acc)">${fmt(sto.price)}</strong>`;
+    })],
+    ['📦 Память', products.map(p=>p.storage.map(s=>s.label).join(', '))],
+    ['🎨 Цвета',  products.map(p=>p.colors.map(c=>c.name).join(', '))],
+    ['⭐ Рейтинг',products.map(p=>p.rating)],
+    ...allSpecKeys.map(k=>[k, products.map(p=>{const s=p.specs.find(([sk])=>sk===k);return s?s[1]:'—';})]),
+  ];
+
+  const tbody='<tbody>'+rows.map(([label,vals],ri)=>`
+    <tr class="${ri%2===0?'cmp-row-even':''}">
+      <td class="cmp-spec-label">${label}</td>
+      ${vals.map(v=>`<td>${v||'—'}</td>`).join('')}
+    </tr>
+  `).join('')+`<tr><td></td>${products.map(p=>`<td class="cmp-buy-cell">
+    <button class="btn-cmp-buy" onclick="addToCart('${p.id}')">🛒 В корзину</button>
+  </td>`).join('')}</tr></tbody>`;
+
+  el.innerHTML=`<div class="compare-table-wrap"><table class="compare-table">${thead}${tbody}</table></div>`;
+}
+
+// корзина
+function addToCart(pid){
+  const p=PRODUCTS.find(x=>x.id===pid);
+  const sel=selectedStorage[pid]??p.storage[0].label;
+  const sto=p.storage.find(s=>s.label===sel)||p.storage[0];
+  const key=pid+'-'+sel;
+  const ex=cart.find(c=>c.key===key);
+  if(ex) ex.qty++;
+  else cart.push({key,id:pid,name:p.name,storage:sel,price:sto.price,img:getImg(p),qty:1,selected:false});
+  updateBadge();
+  showToast(`✅ ${p.name} ${sel!=='Стандарт'?sel:''} добавлен в корзину`);
+}
+function updateBadge(){
+  const t=cart.reduce((a,c)=>a+c.qty,0);
+  const b=document.getElementById('cartBadge');
+  b.textContent=t;b.classList.add('pop');setTimeout(()=>b.classList.remove('pop'),300);
+}
+function renderCart(){
+  const list=document.getElementById('cartList');
+  const summary=document.getElementById('cartSummary');
+  if(!cart.length){
+    list.innerHTML='<div class="cart-empty-msg">🛒 Корзина пуста — добавьте товары из каталога</div>';
+    summary.innerHTML='';return;
+  }
+  list.innerHTML=cart.map((item,i)=>`
+    <div class="cart-item${item.selected?' selected':''}" id="ci-${i}">
+      <input type="checkbox" class="cart-cb" ${item.selected?'checked':''} onchange="toggleSelect(${i})">
+      <div class="cart-item-img"><img src="${item.img}" alt="${item.name}" onerror="this.style.display='none'"></div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-sub">${item.storage!=='Стандарт'?'Память: '+item.storage:''}</div>
+      </div>
+      <div class="cart-qty">
+        <button class="qty-btn" onclick="changeQty(${i},-1)">−</button>
+        <span class="qty-num">${item.qty}</span>
+        <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
+      </div>
+      <div class="cart-item-price">${fmt(item.price*item.qty)}</div>
+      <button class="cart-item-del" onclick="removeItem(${i})">✕</button>
+    </div>
+  `).join('');
+  const total=cart.reduce((a,c)=>a+c.price*c.qty,0);
+  const selCnt=cart.filter(c=>c.selected).reduce((a,c)=>a+c.qty,0);
+  summary.innerHTML=`<div class="cart-summary">
+    <div class="summary-row"><span>Товаров:</span><span>${cart.reduce((a,c)=>a+c.qty,0)} шт.</span></div>
+    ${selCnt>0?`<div class="summary-row"><span>Выбрано:</span><span>${selCnt} шт.</span></div>`:''}
+    <div class="summary-total"><span>Итого</span><span>${fmt(total)}</span></div>
+    <button class="btn-checkout" onclick="checkout()">Оформить заказ →</button>
+  </div>`;
+}
+function toggleSelect(i){cart[i].selected=!cart[i].selected;renderCart();}
+function toggleSelectAll(){const all=cart.every(c=>c.selected);cart.forEach(c=>c.selected=!all);renderCart();}
+function deleteSelected(){const b=cart.length;cart=cart.filter(c=>!c.selected);updateBadge();if(cart.length<b)showToast('🗑 Удалено');renderCart();}
+function removeItem(i){cart.splice(i,1);updateBadge();renderCart();}
+function changeQty(i,d){cart[i].qty+=d;if(cart[i].qty<=0){cart.splice(i,1);updateBadge();}else updateBadge();renderCart();}
+function checkout(){showToast('✅ Заказ оформлен! Мы свяжемся с вами');cart=[];updateBadge();renderCart();setTimeout(()=>goCatalog(),1800);}
+
+// моделька звонка
+function openCallModal(productName){
+  const txt=productName?`Позвоните нам, чтобы уточнить наличие «${productName}».`:'Специалист проконсультирует по наличию, доставке и оплате.';
+  document.getElementById('modalText').textContent=txt;
+  document.getElementById('callModal').classList.add('open');
+}
+function closeCallModal(e){if(e.target.id==='callModal')document.getElementById('callModal').classList.remove('open');}
+
+// тосты
+let _tt;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),2800);}
+
+// утилиты
+function fmt(n){return n.toLocaleString('ru-RU')+' ₽'}
+
+// запуск
+buildBrandFilter();
+buildYearFilter();
+renderGrid();
+</script>
+</body>
+</html>
